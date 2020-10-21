@@ -20,7 +20,7 @@ namespace LeagueOfPlots.Areas.Identity
                     options.UseNpgsql(
                         context.Configuration.GetConnectionString("MyWebApiConection")));
 
-                services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
                     .AddEntityFrameworkStores<ApplicationDbContext>();
             });
         }

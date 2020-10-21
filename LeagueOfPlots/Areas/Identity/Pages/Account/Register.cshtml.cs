@@ -46,20 +46,25 @@ namespace LeagueOfPlots.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required (ErrorMessage = "Le nom d'utilisateur est requis")]
+            [StringLength(50)]
+            [Display(Name ="Nom d'utilisateur")]
+            public String UserName { get; set; }
+
+            [Required(ErrorMessage = "L'email est requis")]
+            [EmailAddress (ErrorMessage = "L'email n'est pas un e-mail valide")]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Le mot de passe est requis")]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Mot de passe")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Confirmer le mot de passe")]
+            [Compare("Password", ErrorMessage = "Le mot de passe et la confirmation ne sont pas égaux")]
             public string ConfirmPassword { get; set; }
         }
 
@@ -75,7 +80,7 @@ namespace LeagueOfPlots.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
