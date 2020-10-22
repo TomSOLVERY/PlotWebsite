@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/adminlte.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/gallery.scss" asp-append-version="true" />
     <script src="https://kit.fontawesome.com/4f30f82d61.js" crossorigin="anonymous" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/adminlte.js" asp-append-version="true"></script>
@@ -34,6 +35,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Rules" asp-action="Index">Règles</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Gallery" asp-action="Index">Galerie</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -50,7 +54,7 @@
         </nav>
     </header>
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-4">
             @RenderBody()
         </main>
     </div>

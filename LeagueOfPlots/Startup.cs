@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LeagueOfPlots.Models;
+using LeagueOfPlots.Models.Gallery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,6 +28,13 @@ namespace LeagueOfPlots
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddSingleton<AlbumCollection>();
+            services.AddSingleton<ImageProcessor>();
+            services.AddWebOptimizer(pipeline =>
+            {
+                pipeline.TranspileJavaScriptFiles();
+                pipeline.CompileScssFiles();
+            });
             services.AddRazorPages();
         }
 
@@ -45,6 +53,7 @@ namespace LeagueOfPlots
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseWebOptimizer();
 
             app.UseRouting();
 

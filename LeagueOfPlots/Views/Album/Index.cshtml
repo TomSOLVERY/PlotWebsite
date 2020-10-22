@@ -1,0 +1,75 @@
+﻿@using LeagueOfPlots.Models.Gallery
+@model LeagueOfPlots.ViewModels.ViewModelAlbum
+@{ ViewData["Title"] = Model.Album.Name;
+                ViewData["Description"] = $"The photo album \"{Model.Album.Name}\" containing {Model.Album.Photos.Count} photos including {string.Join(", ", Model.Album.Photos.Take(5))}";
+                ViewData["Image"] = this.Context.Request.Scheme + "://" + this.Context.Request.Host + Model.Album.CoverPhoto?.GetThumbnailLink((int)ImageType.Full, out int h); }
+
+    <div id="admin">
+        <style>
+            .browseFile{
+                position: absolute;
+                margin-top: 3px;
+                margin-left: 3px;
+                height: 1px;
+                width: 1px;
+                z-index: -5;
+            }
+        </style>
+        
+        <button id="addFile"class="btn btn-success float-right" type="button"><i class="fas fa-plus"></i>&nbsp;Ajouter une photo</button>
+        <form method="post" enctype="multipart/form-data">
+            <input type="file" class="browseFile" id="files" onchange="onChange()"  aria-label="Upload photo" name="files" required multiple accept="image/*" />
+            <input type="submit" class="browseFile" asp-action="Upload" asp-route-name="@this.Model.Album.Name" data-progress="Uploading..." id="btnfiles" value="Upload photos" />
+        </form>
+
+        <form method="post" class="delete">
+            <button type="submit" asp-action="Delete" asp-route-name="@this.Model.Album.Name" class="btn btn-danger" title="Supprimer l'album"><i class="fas fa-trash"></i> Supprimer l'album</button>
+        </form>
+    </div>
+
+@if (Model.Album.Next != null)
+{
+    <link rel="next" href="@Model.Album.Next.Link" />
+}
+
+@if (Model.Album.Previous != null)
+{
+    <link rel="prev" href="@Model.Album.Previous.Link" />
+}
+
+<div class="title" itemscope itemtype="http://schema.org/ListItem" itemprop="itemListElement">
+    <paging model="@Model.Album" />
+    <h2 itemscope itemtype="http://schema.org/Thing" itemprop="item">
+        <span itemprop="name">@Model.Album.Name</span>
+    </h2>
+    <meta itemprop="position" content="2" />
+</div>
+
+@{ 
+    if(this.Model.Album.Photos.Count == 0)
+    {
+        <p>Aucune photo.</p>
+    }
+}
+
+<div class="pic photolist">
+    @{ foreach (Photo photo in Model.Album.Photos)
+        {
+<a href="@photo.Link" data-text="@photo.DisplayName">
+    <img photo="@photo" Type="Thumbnail" />
+</a> } }
+</div>
+
+@section scripts {
+    <script src="/js/gallery.js" async></script>
+    <script>
+        $("#addFile").click(function () {
+            $("#files").click();
+        })
+
+        function onChange() {
+            debugger;
+            $("#btnfiles").click();
+        }
+    </script>
+}
