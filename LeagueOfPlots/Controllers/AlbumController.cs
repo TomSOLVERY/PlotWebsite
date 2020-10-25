@@ -35,7 +35,6 @@ namespace LeagueOfPlots.Controllers
             {
                 return NotFound();
             }
-
             return View(new ViewModelAlbum { Album = album });
         }
 

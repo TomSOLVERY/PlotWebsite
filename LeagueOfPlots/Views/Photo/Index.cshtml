@@ -4,19 +4,31 @@
     ViewData["Description"] = $"{Model.Photo.DisplayName} from the album {Model.Photo.Album.Name}";
     ViewData["Image"] = this.Context.Request.Scheme + "://" + this.Context.Request.Host + Model.Photo.GetThumbnailLink((int)ImageType.Full, out int h); }
 
-<div id="admin">
-    <form method="post" class="float-right">
-        <input type="text" name="name" class="form-control" aria-label="Name" required value="@Model.Photo.DisplayName" />
-        <button class="btn btn-success" type="submit" asp-action="Rename" asp-route-albumName="@this.Model.Photo.Album.Name" asp-route-photoName="@this.Model.Photo.DisplayName" title="Renommer la photo">
+<div class="row">
+    <div class="col-md-12">
+        <button id="rename" class="btn btn-success float-right" type="button" title="Renommer la photo">
             <i class="fas fa-edit"></i>&nbsp;Renommer la photo
         </button>
-    </form>
+        <form method="post" class="float-right" style="margin-left:5px">
+            <input type="text" name="name" class="form-control" aria-label="Name" required value="@Model.Photo.DisplayName" />
+            <button class="btn btn-success d-none" id="triggerRename" type="submit" asp-action="Rename" asp-route-albumName="@this.Model.Photo.Album.Name" asp-route-photoName="@this.Model.Photo.DisplayName">
+            </button>
+        </form>
 
-    <form method="post" class="delete">
-        <button class="btn btn-danger" type="submit" asp-action="Delete" asp-route-albumName="@this.Model.Photo.Album.Name" asp-route-photoName="@this.Model.Photo.DisplayName" title="Supprimer la photo">
-            <i class="fas fa-trash"></i>Supprimer la photo
-        </button>
-    </form>
+
+        <form method="post" class="delete float-right">
+            <button class="btn btn-danger" type="submit" asp-action="Delete" asp-route-albumName="@this.Model.Photo.Album.Name" asp-route-photoName="@this.Model.Photo.DisplayName" title="Supprimer la photo">
+                <i class="fas fa-trash"></i>Supprimer la photo
+            </button>
+        </form>
+        <div class="title" itemscope itemtype="http://schema.org/ListItem" itemprop="itemListElement">
+            <paging model="@Model.Photo" />
+            <h2 itemscope itemtype="http://schema.org/Thing" itemprop="item">
+                <span itemprop="name">@Model.Photo.DisplayName</span>
+            </h2>
+            <meta itemprop="position" content="3" />
+        </div>
+    </div>
 </div>
 
 <link rel="index" href="@Model.Photo.Album.Link" />
@@ -30,13 +42,7 @@
     <link rel="prev" href="@Model.Photo.Previous.Link" />
 }
 
-<div class="title" itemscope itemtype="http://schema.org/ListItem" itemprop="itemListElement">
-    <paging model="@Model.Photo" />
-    <h2 itemscope itemtype="http://schema.org/Thing" itemprop="item">
-        <span itemprop="name">@Model.Photo.DisplayName</span>
-    </h2>
-    <meta itemprop="position" content="3" />
-</div>
+
 
 <div class="photo">
     <div class="pic">
@@ -57,5 +63,10 @@
 
 @section scripts{
     <script src="/js/gallery.js" async></script>
+<script>
+    $("#rename").click(function () {
+        $("#triggerRename").click();
+    })
+</script>
 }
 

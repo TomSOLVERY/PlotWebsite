@@ -12,8 +12,9 @@
     <title>@ViewData["Title"] - LeagueOfPlots</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/adminlte.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/adminlte.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/gallery.scss" asp-append-version="true" />
+    <link rel="shortcut icon" type="image/x-icon" href="@Url.Content("~/favicon.ico")" asp-append-version="true"/>
     <script src="https://kit.fontawesome.com/4f30f82d61.js" crossorigin="anonymous" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/adminlte.js" asp-append-version="true"></script>
@@ -23,37 +24,36 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
+                <div style="font-size:25px">
+                    <ul class="navbar-nav ">
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Accueil</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Rules" asp-action="Index">Règles</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Gallery" asp-action="Index">Galerie</a>
                         </li>
                     </ul>
                 </div>
-            </div>
-            <div class="navbar-collapse collapse navbar-custom-menu">
-                <ul class="navbar nav">
-                    <li class="nav-item user-menu">
-                        <a class="nav-link text-light" style="display:contents" asp-area="" asp-controller="Account" asp-action="Index">
-                            <img src="~/img/avatar.png" height="40" width="40" class="user-image" alt="Image Utilisateur" />
-                            <span class="d-none d-md-inline-block">@user.UserName</span>
-                        </a>
-                    </li>
-                </ul>
+                <div>
+                    <h1 style="color:#EC8108">Les Plots</h1>
+                </div>
+                <div class="float-right" style="font-size:25px">
+                    <ul class="navbar nav">
+                        <li class="nav-item user-menu">
+                            <a class="nav-link text-light" style="display:contents" asp-area="" asp-controller="Account" asp-action="Index">
+                                <img src="~/img/avatar.png" height="40" width="40" class="user-image" alt="Image Utilisateur" />
+                                <span class="d-none d-md-inline-block">@user.UserName</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="Logout">Se déconnecter</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container-xl">
         <main role="main" class="pb-4">
             @RenderBody()
         </main>
@@ -61,7 +61,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - League of Plots - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2020 - League of Plots
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>

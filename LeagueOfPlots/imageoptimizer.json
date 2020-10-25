@@ -1,11 +1,11 @@
 {
     "optimizations": [
         {
-            "includes": [ "wwwroot/albums/*/thumbnail/*.*" ],
+            "includes": [ "/albums/*/thumbnail/*.*" ],
             "lossy": true
         },
         {
-            "includes": [ "wwwroot/albums/*/*.*" ],
+            "includes": [ "/albums/*/*.*" ],
             "lossy": false
         }
     ]
