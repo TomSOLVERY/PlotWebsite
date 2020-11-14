@@ -4,82 +4,54 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using LeagueOfPlots.Areas.Identity.Data;
+using LeagueOfPlots.Core;
+using LeagueOfPlots.Models;
 using LeagueOfPlots.Models.Gallery;
 using LeagueOfPlots.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace LeagueOfPlots.Controllers
 {
     [Authorize]
-    public class PhotoController : Controller
+    public class PhotoController : BaseController
     {
-        private AlbumCollection _ac;
-        private IWebHostEnvironment _environment;
-
-        public PhotoController(AlbumCollection ac, IWebHostEnvironment environment)
+        public PhotoController(ApplicationDbContext context, UserManager<ApplicationUser> userManager) : base(context,userManager)
         {
-            _ac = ac;
-            _environment = environment;
+          
         }
-        public IActionResult Index(string albumName, string photoName)
+        public IActionResult Index(Int32 AlbumId,Int32 Id)
         {
-            var album = _ac.Albums.FirstOrDefault(a => a.Name.Equals(albumName, StringComparison.OrdinalIgnoreCase));
-            Photo photo = album.Photos.FirstOrDefault(p => p.DisplayName.Equals(photoName, StringComparison.OrdinalIgnoreCase));
-            return View(new ViewModelPhoto { Photo = photo});
+            List<Photo> photos = this.ApplicationDbContext.Photos.Include(x => x.Album).Where(x => x.AlbumId == AlbumId).ToList();
+            Photo photo = photos.FirstOrDefault(x => x.Id == Id);
+            if (photo == null)
+                return NotFound();
+            return View(new ViewModelPhoto(photo,photos));
         }
 
-        public IActionResult Rename(string albumName, string photoName)
+        public IActionResult Rename(Int32 Id, String name)
         {
-            var album = _ac.Albums.FirstOrDefault(a => a.Name.Equals(albumName, StringComparison.OrdinalIgnoreCase));
-            Photo photo = album.Photos.FirstOrDefault(p => p.DisplayName.Equals(photoName, StringComparison.OrdinalIgnoreCase));
-            string name = Request.Form["name"] + Path.GetExtension(photo.AbsolutePath);
-
-            var newPhotoPath = new FileInfo(Path.Combine(album.AbsolutePath, name));
-            int index = album.Photos.IndexOf(photo);
-
-            System.IO.File.Move(photo.AbsolutePath, newPhotoPath.FullName);
-            var newPhoto = new Photo(album, newPhotoPath);
-
-            album.Photos.Insert(index, newPhoto);
-            album.Photos.RemoveAt(index + 1);
-
-            // Rename thumbnails
-            string folder = Path.Combine(album.AbsolutePath, "thumbnail");
-            var pattern = $"{photo.DisplayName}-*x*{Path.GetExtension(photo.AbsolutePath)}";
-
-            foreach (var file in Directory.EnumerateFiles(folder, pattern))
-            {
-                string newThumbnail = Path.Combine(folder, Path.GetFileName(file).Replace(photo.DisplayName, newPhoto.DisplayName));
-                System.IO.File.Move(file, newThumbnail);
-            }
-
-            photo.Album.Sort();
-
-            return new RedirectResult($"~/photo?albumName={WebUtility.UrlEncode(albumName).Replace('+', ' ')}&photoName={newPhoto.DisplayName}");
+            Photo photo = this.ApplicationDbContext.Photos.FirstOrDefault(x => x.Id == Id);
+            if (photo == null)
+                return NotFound();
+            photo.Name = name;
+            this.ApplicationDbContext.SaveChanges();
+            return new RedirectResult($"~/Photo?AlbumId="+photo.AlbumId+"&Id=" + Id);
 
         }
 
-        public IActionResult Delete(string albumName, string photoName)
+        public IActionResult Delete(Int32 Id)
         {
-            var album = _ac.Albums.FirstOrDefault(a => a.Name.Equals(albumName, StringComparison.OrdinalIgnoreCase));
-            Photo photo = album.Photos.FirstOrDefault(p => p.DisplayName.Equals(photoName, StringComparison.OrdinalIgnoreCase));
-            album.Photos.Remove(photo);
-
-            if (System.IO.File.Exists(photo.AbsolutePath))
-            {
-                System.IO.File.Delete(photo.AbsolutePath);
-                string folder = Path.Combine(album.AbsolutePath, "thumbnail");
-                var pattern = $"{photo.DisplayName}-*x*{Path.GetExtension(photo.AbsolutePath)}";
-
-                foreach (var file in Directory.EnumerateFiles(folder, pattern))
-                {
-                    System.IO.File.Delete(file);
-                }
-            }
-
-            return new RedirectResult($"~/Album?name={WebUtility.UrlEncode(albumName).Replace('+', ' ')}");
+            Photo photo = this.ApplicationDbContext.Photos.FirstOrDefault(p => p.Id == Id);
+            if (photo == null)
+                return NotFound();
+            this.ApplicationDbContext.Remove(photo);
+            this.ApplicationDbContext.SaveChanges();
+            return new RedirectResult($"~/Album?Id=" + photo.AlbumId);
         }
     }
 }

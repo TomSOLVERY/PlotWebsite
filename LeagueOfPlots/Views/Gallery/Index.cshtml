@@ -1,8 +1,8 @@
-﻿@inject LeagueOfPlots.Models.Gallery.AlbumCollection ac
+﻿@using LeagueOfPlots.ViewModels 
 @using LeagueOfPlots.Models.Gallery
-@{ ViewData["Title"] = "Albums";
-                ViewData["Description"] = $"An online gallery where I share my photos with the world. Currently showing {ac.Albums.Count} albums ({string.Join(", ", ac.Albums.Select(a => a.Name))})";
-                ViewData["Image"] = this.Context.Request.Scheme + "://" + this.Context.Request.Host + ac.Albums.FirstOrDefault()?.CoverPhoto?.GetThumbnailLink((int)ImageType.Full, out int h); 
+@model List<ViewModelAlbum>
+@{ 
+    ViewData["Title"] = "Albums";
 }
    
 
@@ -23,23 +23,23 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        @if (ac.Albums.Count == 0)
+        @if (this.Model.Count == 0)
         {
             <p>Aucun album.</p>
         }
-        <div class="albumlist pic">
-            @{ foreach (Album album in ac.Albums)
+        <div class="photolist pic">
+            @{ foreach (ViewModelAlbum album in this.Model)
                 {
-                    var photo = album.CoverPhoto;
+                    var photo = album.Thumbnail;
                     if (photo != null)
                     {
-                        <a href="/Album?name=@album.UrlName" data-text="@album.Name (@album.Photos.Count)">
-                            <img photo="@photo" type="Thumbnail" />
+                        <a href="/Album?Id=@album.Id" data-text="@album.Name (@album.Photos.Count)">
+                            <img src="@photo" alt="@album.Name" height="128" width="128"  type="Thumbnail" />
                         </a> 
                     }
                     else
                     {
-                        <a href="Album?name=@album.UrlName" data-text="@album.Name">
+                        <a href="Album?Id=@album.Id" data-text="@album.Name (@album.Photos.Count)">
                             <img src="/img/defaultThumbnail.png" />
                         </a> 
                     }

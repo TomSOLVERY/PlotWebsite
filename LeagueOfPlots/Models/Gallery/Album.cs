@@ -6,84 +6,31 @@ using System.Threading.Tasks;
 
 namespace LeagueOfPlots.Models.Gallery
 {
-    public class Album : IPaginator
+    public class Album
     {
-        private AlbumCollection _ac;
-
-        public Album(string absolutePath, AlbumCollection ac)
+        public Album() { }
+        public Album(String name, String username)
         {
-            _ac = ac;
-            AbsolutePath = absolutePath;
-            Name = new DirectoryInfo(AbsolutePath).Name;
-            Photos = new List<Photo>();
+            this.Name = name;
+            this.AuthorUsername = username;
         }
+        public Int32 Id { get; set; }
+        public String Name { get; set; }
+        public String AuthorUsername { get; set; }
+        public List<Photo> Photos { get; set; }
 
-        public string Name { get; }
-
-        public string UrlName
-        {
+        public Photo CoverPhoto { 
             get
             {
-                return Name.Replace(" ", "%20").ToLowerInvariant();
+                return this.Photos.FirstOrDefault();
             }
         }
-
-        public string Link
-        {
-            get
-            {
-                return $"/Album?name={UrlName}";
-            }
-        }
-
-        public string AbsolutePath { get; }
-
-        public List<Photo> Photos { get; private set; }
-
-        public Photo CoverPhoto
-        {
-            get
-            {
-                return Photos?.FirstOrDefault();
-            }
-        }
-
-        public IPaginator Next
-        {
-            get
-            {
-                int index = _ac.Albums.IndexOf(this);
-
-                if (index < _ac.Albums.Count - 1)
-                {
-                    return _ac.Albums[index + 1];
-                }
-
-                return null;
-            }
-        }
-
-        public IPaginator Previous
-        {
-            get
-            {
-                int index = _ac.Albums.IndexOf(this);
-
-                if (index > 0)
-                {
-                    return _ac.Albums[index - 1];
-                }
-
-                return null;
-            }
-        }
-
         /// <summary>
         /// Sorts the photos in the album.
         /// </summary>
         public void Sort()
         {
-            Photos = Photos.OrderBy(p => p.DisplayName).ToList();
+            Photos = Photos.OrderBy(p => p.Name).ToList();
         }
 
     }

@@ -1,8 +1,7 @@
 ﻿@model LeagueOfPlots.ViewModels.ViewModelPhoto
-@using LeagueOfPlots.Models.Gallery
-@{ ViewData["Title"] = $"{Model.Photo.DisplayName} - {Model.Photo.Album.Name}";
-    ViewData["Description"] = $"{Model.Photo.DisplayName} from the album {Model.Photo.Album.Name}";
-    ViewData["Image"] = this.Context.Request.Scheme + "://" + this.Context.Request.Host + Model.Photo.GetThumbnailLink((int)ImageType.Full, out int h); }
+@{
+    ViewData["Title"] = $"{Model.Name} - {Model.AlbumName}";
+}
 
 <div class="row">
     <div class="col-md-12">
@@ -10,54 +9,53 @@
             <i class="fas fa-edit"></i>&nbsp;Renommer la photo
         </button>
         <form method="post" class="float-right" style="margin-left:5px">
-            <input type="text" name="name" class="form-control" aria-label="Name" required value="@Model.Photo.DisplayName" />
-            <button class="btn btn-success d-none" id="triggerRename" type="submit" asp-action="Rename" asp-route-albumName="@this.Model.Photo.Album.Name" asp-route-photoName="@this.Model.Photo.DisplayName">
+            <input type="text" name="name" class="form-control" aria-label="Name" required value="@Model.Name" />
+            <button class="btn btn-success d-none" id="triggerRename" type="submit" asp-action="Rename" asp-route-Id="@this.Model.Id">
             </button>
         </form>
 
 
         <form method="post" class="delete float-right">
-            <button class="btn btn-danger" type="submit" asp-action="Delete" asp-route-albumName="@this.Model.Photo.Album.Name" asp-route-photoName="@this.Model.Photo.DisplayName" title="Supprimer la photo">
+            <button class="btn btn-danger" type="submit" asp-action="Delete" asp-route-Id="@this.Model.Id" title="Supprimer la photo">
                 <i class="fas fa-trash"></i>Supprimer la photo
             </button>
         </form>
         <div class="title" itemscope itemtype="http://schema.org/ListItem" itemprop="itemListElement">
-            <paging model="@Model.Photo" />
+            <paging model="@Model" />
             <h2 itemscope itemtype="http://schema.org/Thing" itemprop="item">
-                <span itemprop="name">@Model.Photo.DisplayName</span>
+                <span itemprop="name">@Model.Name</span>
             </h2>
             <meta itemprop="position" content="3" />
         </div>
     </div>
 </div>
 
-<link rel="index" href="@Model.Photo.Album.Link" />
-@if (Model.Photo.Next != null)
+@if (Model.Next != null)
 {
-    <link rel="next" href="@Model.Photo.Next.Link" />
+    <link rel="next" href="@Model.Next.Link" />
 }
 
-@if (Model.Photo.Previous != null)
+@if (Model.Previous != null)
 {
-    <link rel="prev" href="@Model.Photo.Previous.Link" />
+    <link rel="prev" href="@Model.Previous.Link" />
 }
 
 
 
 <div class="photo">
     <div class="pic">
-        <img photo="@Model.Photo" type="Full" />
+        <img src="@this.Model.Content" />
     </div>
 
     <aside itemscope itemtype="http://schema.org/ListItem" itemprop="itemListElement">
         <meta itemprop="position" content="2" />
         <span>
             Posté dans :
-            <a href="@Model.Photo.Album.Link" itemscope itemtype="http://schema.org/Thing" itemprop="item">
-                <span itemprop="name">@Model.Photo.Album.Name</span>
+            <a href="@Model.AlbumLink" itemscope itemtype="http://schema.org/Thing" itemprop="item">
+                <span itemprop="name">@Model.AlbumName</span>
             </a>
         </span>
-        <a href="@Model.Photo.DownloadLink" class="download">Télécharger</a>
+        @*<a href="@Model.DownloadLink" class="download">Télécharger</a>*@
     </aside>
 </div>
 

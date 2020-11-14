@@ -4,97 +4,76 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using LeagueOfPlots.Areas.Identity.Data;
+using LeagueOfPlots.Helpers;
+using LeagueOfPlots.Models;
 using LeagueOfPlots.Models.Gallery;
 using LeagueOfPlots.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing;
+using LeagueOfPlots.Core;
+using Microsoft.EntityFrameworkCore;
 
 namespace LeagueOfPlots.Controllers
 {
     [Authorize]
-    public class AlbumController : Controller
+    public class AlbumController : BaseController
     {
         
-        public AlbumController(AlbumCollection ac, IWebHostEnvironment environment, ImageProcessor processor)
+        public AlbumController(ApplicationDbContext applicationDbContext, UserManager<ApplicationUser> userManager) : base(applicationDbContext, userManager)
         {
-            _ac = ac;
-            _environment = environment;
-            _processor = processor;
+          
         }
 
-        private AlbumCollection _ac;
-        private IWebHostEnvironment _environment;
-        private ImageProcessor _processor;
-        public IActionResult Index(string name)
+        public IActionResult Index(Int32 Id)
         {
-            Album album = _ac.Albums.FirstOrDefault(a => a.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-
+            List<Album> albums = this.ApplicationDbContext.Albums.Include(x => x.Photos).ToList();
+            Album album = albums.FirstOrDefault(x => x.Id == Id);
             if (album == null)
             {
                 return NotFound();
             }
-            return View(new ViewModelAlbum { Album = album });
+            return View(new ViewModelAlbum(album,albums));
         }
 
-        public IActionResult Delete(string name)
+        public IActionResult Delete(Int32 Id)
         {
-            string path = Path.Combine(_environment.WebRootPath, "albums", name);
+            Album album = this.ApplicationDbContext.Albums.Include(x => x.Photos).FirstOrDefault(a => a.Id == Id);
+            if (album == null)
+                return NotFound();
+            this.ApplicationDbContext.Remove(album);
+            this.ApplicationDbContext.SaveChanges();
+            return new RedirectResult("~/Gallery");
+        }
 
-            if (Directory.Exists(path))
-                Directory.Delete(path, true);
 
-            var album = _ac.Albums.FirstOrDefault(a => a.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+        public async Task<IActionResult> Create(String name)
+        {
+            ApplicationUser currentUser = await this.UserManager.GetUserAsync(this.HttpContext.User);
+            Album album = new Album(name, currentUser.UserName);
+            this.ApplicationDbContext.Add(album);
+            this.ApplicationDbContext.SaveChanges();
+            return new RedirectResult($"~/Gallery");
+        }
 
-            if (album != null)
+        public async Task<IActionResult> Upload(Int32 id, ICollection<IFormFile> files)
+        {
+            Album album = this.ApplicationDbContext.Albums.FirstOrDefault(a => a.Id == id);
+            foreach (var file in files.Where(f => ImageHelper.IsImageFile(f.FileName)))
             {
-                _ac.Albums.Remove(album);
-            }
-
-            return new RedirectResult("~/");
-        }
-
-        public IActionResult Create(string name)
-        {
-            string path = Path.Combine(_environment.WebRootPath, "albums", name);
-
-            Directory.CreateDirectory(path);
-            var album = new Album(path, _ac);
-            _ac.Albums.Insert(0, album);
-            _ac.Sort();
-
-            return new RedirectResult($"~/Album?name={WebUtility.UrlEncode(name).Replace('+', ' ')}");
-        }
-
-        public async Task<IActionResult> Upload(string name, ICollection<IFormFile> files)
-        {
-            var album = _ac.Albums.FirstOrDefault(a => a.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-
-            foreach (var file in files.Where(f => _ac.IsImageFile(f.FileName)))
-            {
-                string fileName = Path.GetFileName(file.FileName);
-                string filePath = Path.Combine(_environment.WebRootPath, "albums", album.Name, Path.GetFileName(fileName));
-
-                if (System.IO.File.Exists(filePath))
+                using (MemoryStream memoryStream = new MemoryStream())
                 {
-                    filePath = Path.ChangeExtension(filePath, file.GetHashCode() + Path.GetExtension(filePath));
-                }
-
-                using (var imageStream = file.OpenReadStream())
-                using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
-                {
-                    _processor.CreateThumbnails(imageStream, filePath);
-                    await file.CopyToAsync(fileStream);
-                }
-
-                var photo = new Photo(album, new FileInfo(filePath));
-                album.Photos.Insert(0, photo);
+                    await file.CopyToAsync(memoryStream);
+                    Photo photo = new Photo(album, memoryStream.ToArray(), file.FileName);
+                    this.ApplicationDbContext.Add(photo);
+                }  
             }
-
-            album.Sort();
-
-            return new RedirectResult($"~/Album?name={WebUtility.UrlEncode(name).Replace('+', ' ')}");
+            this.ApplicationDbContext.SaveChanges();
+            return new RedirectResult($"~/Album?Id="+album.Id);
         }
     }
 }
