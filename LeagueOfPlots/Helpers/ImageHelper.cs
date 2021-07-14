@@ -34,5 +34,26 @@ namespace LeagueOfPlots.Helpers
                 return stream.ToArray();
             }
         }
+
+        public static String GetTypeMIME(String extension)
+        {
+            switch (extension)
+            {
+                case ".jpg":
+                    return "image/jpeg";
+                case ".jpeg":
+                    return "image/jpeg";
+                case ".gif":
+                    return "image/gif";
+                case ".png":
+                    return "image/png";
+                default:
+                    return "application/octet-stream";
+            }
+        }
+
+       
+
+
     }
 }

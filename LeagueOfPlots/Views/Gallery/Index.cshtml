@@ -1,6 +1,5 @@
 ﻿@using LeagueOfPlots.ViewModels 
-@using LeagueOfPlots.Models.Gallery
-@model List<ViewModelAlbum>
+@model ViewModelGallery
 @{ 
     ViewData["Title"] = "Albums";
 }
@@ -8,7 +7,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <form id="admin" class="float-right" asp-controller="Album" asp-action="Create" method="post">
+        <form id="admin" class="float-right" asp-controller="Gallery" asp-action="Create" method="post">
             <div class="form-group row">
                 <div class="col-md-6">
                     <input type="text" class="form-control" name="name" id="name" aria-label="Album name" placeholder="Nom de l'album" required />
@@ -23,26 +22,17 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        @if (this.Model.Count == 0)
+        @if (this.Model.Albums.Count == 0)
         {
             <p>Aucun album.</p>
         }
         <div class="photolist pic">
-            @{ foreach (ViewModelAlbum album in this.Model)
+            @{ foreach (ViewModelAlbumItem album in this.Model.Albums)
                 {
-                    var photo = album.Thumbnail;
-                    if (photo != null)
-                    {
-                        <a href="/Album?Id=@album.Id" data-text="@album.Name (@album.Photos.Count)">
-                            <img src="@photo" alt="@album.Name" height="128" width="128"  type="Thumbnail" />
-                        </a> 
-                    }
-                    else
-                    {
-                        <a href="Album?Id=@album.Id" data-text="@album.Name (@album.Photos.Count)">
-                            <img src="/img/defaultThumbnail.png" />
-                        </a> 
-                    }
+                    
+                    <a href="/Album?Id=@album.Id" data-text="@album.Name (@album.PhotoCount)">
+                        <img src="@album.Thumbnail" alt="@album.Name" height="128" width="128"  type="Thumbnail" />
+                    </a> 
                  } 
              }
         </div>

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LeagueOfPlots.Areas.Identity.Data;
 using LeagueOfPlots.Core;
 using LeagueOfPlots.Models;
 using LeagueOfPlots.Models.Gallery;
@@ -20,16 +19,21 @@ namespace LeagueOfPlots.Controllers
         public GalleryController(ApplicationDbContext context, UserManager<ApplicationUser> userManager) : base(context, userManager)
         {
         }
-
+        public const int CacheAgeSeconds = 60 * 60 * 24 * 30; // 30 days
         public IActionResult Index()
         {
-            List<ViewModelAlbum> vm = new List<ViewModelAlbum>();
-            List<Album> albums = this.ApplicationDbContext.Albums.Include(x => x.Photos).ToList();
-            foreach(var album in albums)
-            {
-                vm.Add(new ViewModelAlbum(album, albums));
-            }
-            return View(vm);
+            List<Album> albums = this.ApplicationDbContext.Albums.ToList();
+            Response.Headers["Cache-Control"] = $"private,max-age={CacheAgeSeconds}";
+            return View(new ViewModelGallery(albums));
+        }
+
+        public async Task<IActionResult> Create(String name)
+        {
+            ApplicationUser currentUser = await this.UserManager.GetUserAsync(this.HttpContext.User);
+            Album album = new Album(name, currentUser.UserName);
+            this.ApplicationDbContext.Add(album);
+            this.ApplicationDbContext.SaveChanges();
+            return new RedirectResult($"~/Gallery");
         }
     }
 }

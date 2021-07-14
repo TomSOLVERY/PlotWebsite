@@ -1,44 +1,43 @@
-﻿@page
-@model LoginModel
+﻿@model LeagueOfPlots.ViewModels.LoginViewModel
 
 @{
     ViewData["Title"] = "Connexion";
-    Layout = "~/Areas/Identity/Pages/_AuthLayout.cshtml";
+    Layout = "~/Views/Account/_AuthLayout.cshtml";
 }
 
 <h1>@ViewData["Title"]</h1>
 <div class="row">
     <div class="col-md-12">
         <section>
-            <form id="account" method="post">
+            <form method="post">
                 <hr />
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
                     <label>Nom d'utilisateur</label>
-                    <input asp-for="Input.UserName" class="form-control" />
-                    <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                    <input asp-for="UserName" class="form-control" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label>Mot de passe</label>
-                    <input asp-for="Input.Password" class="form-control" />
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <div class="checkbox">
                         <label>
-                            <input asp-for="Input.RememberMe" />
-                            Se souvenir de moi ? 
+                            <input asp-for="RememberMe" />
+                            Se souvenir de moi ?
                         </label>
                     </div>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Se connecter</button>
+                    <button type="submit" asp-action="Login" class="btn btn-primary">Se connecter</button>
                 </div>
-                <div class="form-group">
+                @*<div class="form-group">
                     <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Mot de passe oublié ?</a>
+                        <a id="forgot-password"  asp-re="./ForgotPassword">Mot de passe oublié ?</a>
                     </p>
-                </div>
+                </div>*@
             </form>
         </section>
     </div>

@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LeagueOfPlots.Migrations
 {
-    public partial class AddIdentity : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -153,6 +153,50 @@ namespace LeagueOfPlots.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Photo",
+                columns: table => new
+                {
+                    PHT_ID = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ALB_ID = table.Column<int>(nullable: false),
+                    PHT_CONTENT = table.Column<byte[]>(nullable: true),
+                    PHT_NAME = table.Column<string>(nullable: false),
+                    PHT_EXTENSION = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Photo", x => x.PHT_ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Album",
+                columns: table => new
+                {
+                    ALB_ID = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ALB_NAME = table.Column<string>(nullable: false),
+                    ALB_AUTHOR_USERNAME = table.Column<string>(nullable: false),
+                    PHT_ID = table.Column<int>(nullable: true),
+                    ALB_PHOTO_COUNT = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Album", x => x.ALB_ID);
+                    table.ForeignKey(
+                        name: "FK_Album_Photo_PHT_ID",
+                        column: x => x.PHT_ID,
+                        principalTable: "Photo",
+                        principalColumn: "PHT_ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Album_PHT_ID",
+                table: "Album",
+                column: "PHT_ID",
+                unique: true);
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -189,10 +233,27 @@ namespace LeagueOfPlots.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Photo_ALB_ID",
+                table: "Photo",
+                column: "ALB_ID");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Photo_Album_ALB_ID",
+                table: "Photo",
+                column: "ALB_ID",
+                principalTable: "Album",
+                principalColumn: "ALB_ID",
+                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Album_Photo_PHT_ID",
+                table: "Album");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -213,6 +274,12 @@ namespace LeagueOfPlots.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Photo");
+
+            migrationBuilder.DropTable(
+                name: "Album");
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿@using LeagueOfPlots.Models.Gallery
-@using LeagueOfPlots.ViewModels;
+﻿@using LeagueOfPlots.ViewModels;
 @model LeagueOfPlots.ViewModels.ViewModelAlbum
 @{ ViewData["Title"] = Model.Name; }          
 
@@ -52,16 +51,15 @@
         <p>Aucune photo.</p>
     }
 }
+<div class="row">
+    <div class="pic photolist col-md-12">
 
-<div class="pic photolist">
-    @{ 
-        foreach (ViewModelPhoto photo in Model.Photos)
-        {
-           <a href="@photo.Link" data-text="@photo.Name">
-               <img src="@photo.Thumbnail" height="128" width="128" alt="@photo.Name" />
-           </a> 
-        }
-     }
+        @{ foreach (ViewModelPhoto photo in Model.Photos)
+                        {
+            <a href="@photo.Link" data-text="@photo.Name">
+                <img src="@photo.Thumbnail" height="128" width="128" alt="@photo.Name" />
+            </a> } }
+    </div>
 </div>
 
 @section scripts {

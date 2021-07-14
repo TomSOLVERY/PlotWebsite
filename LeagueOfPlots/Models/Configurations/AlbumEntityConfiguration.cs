@@ -17,7 +17,10 @@ namespace LeagueOfPlots.Models.Configurations
             builder.Property(x => x.Id).HasColumnName("ALB_ID").ValueGeneratedOnAdd().IsRequired();
             builder.Property(x => x.Name).HasColumnName("ALB_NAME").IsRequired();
             builder.Property(x => x.AuthorUsername).HasColumnName("ALB_AUTHOR_USERNAME").IsRequired();
-            builder.HasMany(x => x.Photos).WithOne(x => x.Album).HasForeignKey(x => x.AlbumId);
+            builder.Property(x => x.CoverPhotoId).HasColumnName("PHT_ID");
+            builder.Property(x => x.PhotoCount).HasColumnName("ALB_PHOTO_COUNT").IsRequired();
+            builder.HasMany(x => x.Photos).WithOne(x => x.Album).HasForeignKey(x => x.AlbumId).OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(x => x.CoverPhoto).WithOne().HasForeignKey<Album>(x => x.CoverPhotoId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

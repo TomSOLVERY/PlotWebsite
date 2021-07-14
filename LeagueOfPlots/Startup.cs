@@ -28,7 +28,6 @@ namespace LeagueOfPlots
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddSingleton<AlbumCollection>();
             services.AddSingleton<ImageProcessor>();
             services.AddWebOptimizer(pipeline =>
             {
@@ -36,6 +35,13 @@ namespace LeagueOfPlots
                 pipeline.CompileScssFiles();
             });
             services.AddRazorPages();
+            services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseLazyLoadingProxies()
+                    .UseNpgsql(
+                        this.Configuration.GetConnectionString("MyWebApiConection")));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddEntityFrameworkStores<ApplicationDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

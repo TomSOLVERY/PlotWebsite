@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using LeagueOfPlots.Areas.Identity.Data;
 using LeagueOfPlots.Helpers;
 using LeagueOfPlots.Models;
 using LeagueOfPlots.Models.Gallery;
@@ -28,10 +27,9 @@ namespace LeagueOfPlots.Controllers
         {
           
         }
-
         public IActionResult Index(Int32 Id)
         {
-            List<Album> albums = this.ApplicationDbContext.Albums.Include(x => x.Photos).ToList();
+            List<Album> albums = this.ApplicationDbContext.Albums.ToList();
             Album album = albums.FirstOrDefault(x => x.Id == Id);
             if (album == null)
             {
@@ -42,22 +40,12 @@ namespace LeagueOfPlots.Controllers
 
         public IActionResult Delete(Int32 Id)
         {
-            Album album = this.ApplicationDbContext.Albums.Include(x => x.Photos).FirstOrDefault(a => a.Id == Id);
+            Album album = this.ApplicationDbContext.Albums.FirstOrDefault(a => a.Id == Id);
             if (album == null)
                 return NotFound();
             this.ApplicationDbContext.Remove(album);
             this.ApplicationDbContext.SaveChanges();
             return new RedirectResult("~/Gallery");
-        }
-
-
-        public async Task<IActionResult> Create(String name)
-        {
-            ApplicationUser currentUser = await this.UserManager.GetUserAsync(this.HttpContext.User);
-            Album album = new Album(name, currentUser.UserName);
-            this.ApplicationDbContext.Add(album);
-            this.ApplicationDbContext.SaveChanges();
-            return new RedirectResult($"~/Gallery");
         }
 
         public async Task<IActionResult> Upload(Int32 id, ICollection<IFormFile> files)
@@ -69,10 +57,13 @@ namespace LeagueOfPlots.Controllers
                 {
                     await file.CopyToAsync(memoryStream);
                     Photo photo = new Photo(album, memoryStream.ToArray(), file.FileName);
-                    this.ApplicationDbContext.Add(photo);
+                    await this.ApplicationDbContext.AddAsync(photo);
+                    album.PhotoCount++;
+                    if (album.CoverPhoto == null)
+                        album.CoverPhoto = photo;
                 }  
             }
-            this.ApplicationDbContext.SaveChanges();
+            await this.ApplicationDbContext.SaveChangesAsync();
             return new RedirectResult($"~/Album?Id="+album.Id);
         }
     }

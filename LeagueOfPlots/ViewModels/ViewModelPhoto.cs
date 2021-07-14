@@ -16,7 +16,7 @@ namespace LeagueOfPlots.ViewModels
             this.AlbumLink = $"/Album?Id=" + model.AlbumId;
             this.AlbumName = model.Album.Name;
             this.Photos = photos;
-            this.Content = "data:image/png;base64," + Convert.ToBase64String(model.Content);
+            this.Content = "data:image/png;base64," + Convert.ToBase64String(model.Content.Content);
             this.Thumbnail = model.Thumbnail == null ? null : "data:image/png;base64," + Convert.ToBase64String(model.Thumbnail);
             this.AlbumId = model.AlbumId;
             this.Index = photos.IndexOf(model);

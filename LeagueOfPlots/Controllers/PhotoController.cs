@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
-using LeagueOfPlots.Areas.Identity.Data;
 using LeagueOfPlots.Core;
+using LeagueOfPlots.Helpers;
 using LeagueOfPlots.Models;
 using LeagueOfPlots.Models.Gallery;
 using LeagueOfPlots.ViewModels;
@@ -26,7 +25,7 @@ namespace LeagueOfPlots.Controllers
         }
         public IActionResult Index(Int32 AlbumId,Int32 Id)
         {
-            List<Photo> photos = this.ApplicationDbContext.Photos.Include(x => x.Album).Where(x => x.AlbumId == AlbumId).ToList();
+            List<Photo> photos = this.ApplicationDbContext.Photos.Where(x => x.AlbumId == AlbumId).ToList();
             Photo photo = photos.FirstOrDefault(x => x.Id == Id);
             if (photo == null)
                 return NotFound();
@@ -49,9 +48,18 @@ namespace LeagueOfPlots.Controllers
             Photo photo = this.ApplicationDbContext.Photos.FirstOrDefault(p => p.Id == Id);
             if (photo == null)
                 return NotFound();
+            photo.Album.PhotoCount--;
             this.ApplicationDbContext.Remove(photo);
             this.ApplicationDbContext.SaveChanges();
             return new RedirectResult($"~/Album?Id=" + photo.AlbumId);
+        }
+
+        public IActionResult Download(Int32 id)
+        {
+            Photo photo = this.ApplicationDbContext.Photos.Include(x => x.Content).FirstOrDefault(x => x.Id == id);
+            if (photo == null)
+                return this.NotFound();
+            return this.File(photo.Content.Content, ImageHelper.GetTypeMIME(photo.Extension), photo.ToString());
         }
     }
 }

@@ -83,6 +83,87 @@ namespace LeagueOfPlots.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("LeagueOfPlots.Models.Gallery.Album", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("ALB_ID")
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("AuthorUsername")
+                        .IsRequired()
+                        .HasColumnName("ALB_AUTHOR_USERNAME")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("CoverPhotoId")
+                        .HasColumnName("PHT_ID")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnName("ALB_NAME")
+                        .HasColumnType("text");
+
+                    b.Property<int>("PhotoCount")
+                        .HasColumnName("ALB_PHOTO_COUNT")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CoverPhotoId")
+                        .IsUnique();
+
+                    b.ToTable("Album");
+                });
+
+            modelBuilder.Entity("LeagueOfPlots.Models.Gallery.Photo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("PHT_ID")
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("AlbumId")
+                        .HasColumnName("ALB_ID")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Extension")
+                        .IsRequired()
+                        .HasColumnName("PHT_EXTENSION")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnName("PHT_NAME")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AlbumId");
+
+                    b.ToTable("Photo");
+                });
+
+            modelBuilder.Entity("LeagueOfPlots.Models.Gallery.PhotoContent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("PHT_ID")
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<byte[]>("Content")
+                        .IsRequired()
+                        .HasColumnName("PHT_CONTENT")
+                        .HasColumnType("bytea");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Photo");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -215,6 +296,32 @@ namespace LeagueOfPlots.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("LeagueOfPlots.Models.Gallery.Album", b =>
+                {
+                    b.HasOne("LeagueOfPlots.Models.Gallery.Photo", "CoverPhoto")
+                        .WithOne()
+                        .HasForeignKey("LeagueOfPlots.Models.Gallery.Album", "CoverPhotoId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("LeagueOfPlots.Models.Gallery.Photo", b =>
+                {
+                    b.HasOne("LeagueOfPlots.Models.Gallery.Album", "Album")
+                        .WithMany("Photos")
+                        .HasForeignKey("AlbumId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("LeagueOfPlots.Models.Gallery.PhotoContent", b =>
+                {
+                    b.HasOne("LeagueOfPlots.Models.Gallery.Photo", null)
+                        .WithOne("Content")
+                        .HasForeignKey("LeagueOfPlots.Models.Gallery.PhotoContent", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

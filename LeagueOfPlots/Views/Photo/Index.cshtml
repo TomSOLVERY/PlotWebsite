@@ -55,7 +55,7 @@
                 <span itemprop="name">@Model.AlbumName</span>
             </a>
         </span>
-        @*<a href="@Model.DownloadLink" class="download">Télécharger</a>*@
+        <a href="/Photo/Download?id=@this.Model.Id" class="download">Télécharger</a>
     </aside>
 </div>
 
@@ -64,7 +64,7 @@
 <script>
     $("#rename").click(function () {
         $("#triggerRename").click();
-    })
+    });
 </script>
 }
 
