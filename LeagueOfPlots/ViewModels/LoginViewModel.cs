@@ -8,11 +8,15 @@ namespace LeagueOfPlots.ViewModels
 {
     public class LoginViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Le nom d'utilisateur est requis")]
+        [StringLength(50)]
+        [Display(Name = "Nom d'utilisateur")]
         public string UserName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Le mot de passe est requis")]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
+        [Display(Name = "Mot de passe")]
         public string Password { get; set; }
 
         [Display(Name = "Remember me?")]

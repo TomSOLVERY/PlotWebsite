@@ -5,18 +5,11 @@
 
 <!-- Sign Up -->
 <div class="container__form container--signup">
-    <form class="form" id="form1">
+    <form class="form" id="form1" asp-action="register" asp-controller="account" method="post">
         <h2 class="form__title">@ViewData["Title"]</h2>
         <div asp-validation-summary="All" class="text-danger"></div>
-        <input asp-for="UserName" type="text" placeholder="Nom d'utilisateur" class="input" />
-        <span asp-validation-for="UserName" class="text-danger"></span>
-        <input asp-for="Email" type="email" placeholder="Email" class="input" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-        <input asp-for="Password" type="password" placeholder="Mot de passe" class="input" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-        <input asp-for="ConfirmPassword" type="password" placeholder=" Confirmation mot de passe" class="input" />
-        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-        <button id="loginBtn" type="button" asp-action="Register" class="btn">S'inscrire</button>
+        <input asp-for="KeyRegistration" type="text" placeholder="Clé d'inscription" class="input" />
+        <button type="submit" class="btn">S'inscrire</button>
     </form>
 </div>
 

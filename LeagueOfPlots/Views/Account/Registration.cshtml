@@ -1,0 +1,28 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutNotConnected.cshtml";
+    ViewData["Title"] = "Inscription";
+
+}
+@model LeagueOfPlots.ViewModels.ViewModelRegistration
+
+<div class="container">
+    
+    
+        <form class="form" asp-action="registration" asp-controller="account" method="post" id="form1">
+            <input id="isFormValidRegister" name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+            <input type="hidden" asp-for="FirstName"/>
+            <input type="hidden" asp-for="LastName"/>
+            <input type="hidden" asp-for="RegistrationKey"/>
+            <h2 class="form__title">@ViewData["Title"] de @this.Model.FirstName @this.Model.LastName</h2>
+            <input asp-for="UserName" type="text" placeholder="Nom d'utilisateur" class="input" />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+            <input asp-for="Email" type="email" placeholder="Email" class="input" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+            <input asp-for="Password" type="password" placeholder="Mot de passe" class="input" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+            <input asp-for="ConfirmPassword" type="password" placeholder=" Confirmation mot de passe" class="input" />
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            <button type="submit" class="btn">S'inscrire</button>
+        </form>
+
+</div>

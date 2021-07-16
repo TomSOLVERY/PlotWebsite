@@ -5,7 +5,8 @@
 }
 
 <div class="container__form container--signin">
-    <form class="form" id="form2">
+    <form method="post" asp-action="login" asp-controller="account" class="form" id="form2">
+        <input id="isFormValidLogin" name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
         <h2 class="form__title">@ViewData["Title"]</h2>
         <div asp-validation-summary="All" class="text-danger"></div>
         <input asp-for="UserName" type="text" placeholder="Nom d'utilisateur" class="input" />
@@ -13,21 +14,9 @@
         <input asp-for="Password" type="password" placeholder="Mot de passe" class="input" />
         <span asp-validation-for="Password" class="text-danger"></span>
         <a href="#" class="link">Mot de passe oublié ?</a>
-        <button id="loginBtn" type="button" class="btn">Se connecter</button>
+        <button id="loginBtn" type="submit" class="btn">Se connecter</button>
     </form>
 </div>
-
-@section Scripts {
-    <script>
-        $("#loginBtn").click(function () {
-            $.ajax({
-                type: 'POST',
-                
-            })
-        })
-    </script>
-    
-}
 
 
 

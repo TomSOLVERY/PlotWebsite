@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LeagueOfPlots.Models
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Int32>,Int32>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -20,6 +20,7 @@ namespace LeagueOfPlots.Models
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Album> Albums { get; set; }
         public DbSet<PhotoContent> PhotoContents { get; set; }
+        public DbSet<RegistrationModel> Registrations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -27,6 +28,8 @@ namespace LeagueOfPlots.Models
             builder.ApplyConfiguration(new AlbumEntityConfiguration());
             builder.ApplyConfiguration(new PhotoEntityConfiguration());
             builder.ApplyConfiguration(new PhotoContentEntityConfiguration());
+            builder.ApplyConfiguration(new UserEntityConfiguration());
+            builder.ApplyConfiguration(new RegistrationEntityConfiguration());
         }
     }
 }

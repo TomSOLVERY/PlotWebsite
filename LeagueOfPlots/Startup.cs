@@ -40,7 +40,7 @@ namespace LeagueOfPlots
                     .UseNpgsql(
                         this.Configuration.GetConnectionString("MyWebApiConection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+            services.AddIdentity<ApplicationUser, IdentityRole<Int32>>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
         }
 

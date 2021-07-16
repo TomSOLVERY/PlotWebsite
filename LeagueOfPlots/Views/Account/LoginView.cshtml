@@ -19,12 +19,16 @@
     </div>
 </div>*@
 
-    <div class="container right-panel-active">
+    <div class="container">
         <!-- Sign Up -->
-        <partial name="Register.cshtml"/>
+        <div id="signUpPartial">
+            <partial name="Register.cshtml" />
+        </div>
 
         <!-- Sign In -->
-        <partial name="Login.cshtml"/>
+        <div id="signInPartial">
+            <partial name="Login.cshtml" />
+        </div>
 
         <!-- Overlay -->
         <div class="container__overlay">
@@ -53,8 +57,5 @@
         signUpBtn.addEventListener("click", () => {
             container.classList.add("right-panel-active");
         });
-
-        fistForm.addEventListener("submit", (e) => e.preventDefault());
-        secondForm.addEventListener("submit", (e) => e.preventDefault());
     </script>
 }

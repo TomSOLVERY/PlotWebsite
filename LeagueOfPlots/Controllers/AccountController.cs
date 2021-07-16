@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LeagueOfPlots.Core;
+using LeagueOfPlots.Extensions;
 using LeagueOfPlots.Models;
 using LeagueOfPlots.ViewModels;
 using Microsoft.AspNetCore.Authentication;
@@ -31,11 +32,57 @@ namespace LeagueOfPlots.Controllers
         }
 
         [HttpGet]
-        public IActionResult Register()
+        public IActionResult Registration()
         {
             if (this.User.Identity.IsAuthenticated)
                 return LocalRedirect("~/");
-            return this.View();
+            String key = null;
+            if (this.TempData.ContainsKey("RegistryKey"))
+            {
+                key = this.TempData.Get<String>("RegistryKey");
+                this.TempData.Remove("RegistryKey");
+            }
+            RegistrationModel user = this.ApplicationDbContext.Registrations.FirstOrDefault(x => x.Key == key && !x.IsRegister);
+            if (user == null)
+                return this.View("~/Views/Account/LoginView.cshtml");
+            ViewModelRegistration vm = new ViewModelRegistration
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                RegistrationKey = key
+            };
+            return this.View("~/Views/Account/Registration.cshtml",vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Registration(ViewModelRegistration vm)
+        {
+            if (this.User.Identity.IsAuthenticated)
+                return LocalRedirect("~/");
+            if (this.ModelState.IsValid)
+            {
+                RegistrationModel registration = this.ApplicationDbContext.Registrations.First(x => x.Key == vm.RegistrationKey);
+                var user = new ApplicationUser
+                {
+                    UserName = vm.UserName,
+                    Email = vm.Email,
+                    FirstName = vm.FirstName,
+                    LastName = vm.LastName
+                };
+                var result = await this.UserManager.CreateAsync(user, vm.Password);
+                if (result.Succeeded)
+                {
+                    registration.IsRegister = true;
+                    this.ApplicationDbContext.SaveChanges();
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return LocalRedirect("~/");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+            return this.View("~/Views/Account/Registration.cshtml", vm);
         }
 
 
@@ -59,32 +106,34 @@ namespace LeagueOfPlots.Controllers
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Nom d'utilisateur ou mot de passe invalide");
-                    return this.View();
+                    return this.View("~/Views/Account/LoginView.cshtml");
                 }
             }
 
             // If we got this far, something failed, redisplay form
-            return this.View();
+            return this.View("~/Views/Account/LoginView.cshtml");
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel vm)
+        public IActionResult Register(RegisterViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = vm.UserName, Email = vm.Email };
-                var result = await this.UserManager.CreateAsync(user, vm.Password);
-                if (result.Succeeded)
+                var user = this.ApplicationDbContext.Registrations.FirstOrDefault(x => x.Key == vm.KeyRegistration);
+                if(user == null)
                 {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect("~/");
+                    this.ModelState.AddModelError(nameof(vm.KeyRegistration), "Clé d'inscription incorrecte");
+                    return this.View("~/Views/Account/LoginView.cshtml");
                 }
-                foreach (var error in result.Errors)
+                if (user.IsRegister)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    this.ModelState.AddModelError(nameof(vm.KeyRegistration), "Ce compte est déja inscrit");
+                    return this.View("~/Views/Account/LoginView.cshtml");
                 }
+                this.TempData.Put("RegistryKey", vm.KeyRegistration);
+                return LocalRedirect("~/Account/Registration");
             }
-            return this.View();
+            return this.View("~/Views/Account/LoginView.cshtml");
         }
 
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel vm)
