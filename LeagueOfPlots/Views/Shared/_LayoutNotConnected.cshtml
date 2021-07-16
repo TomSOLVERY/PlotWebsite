@@ -7,26 +7,15 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="shortcut icon" type="image/x-icon" href="@Url.Content("~/favicon.ico")" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/loginpage.css" asp-append-version="true" />
     <script src="https://kit.fontawesome.com/4f30f82d61.js" crossorigin="anonymous" asp-append-version="true"></script>
 
 </head>
 <body>
-    <header>
-        <div class="text-center">
-            <h1 class="display-4">Bienvenue sur League of Plots</h1>
-        </div>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; @DateTime.Now.Year - League of Plots
-        </div>
-    </footer>
+   
+        @RenderBody()
+  
+    
     <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

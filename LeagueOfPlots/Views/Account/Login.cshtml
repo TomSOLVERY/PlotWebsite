@@ -2,45 +2,33 @@
 
 @{
     ViewData["Title"] = "Connexion";
-    Layout = "~/Views/Account/_AuthLayout.cshtml";
 }
 
-<h1>@ViewData["Title"]</h1>
-<div class="row">
-    <div class="col-md-12">
-        <section>
-            <form method="post">
-                <hr />
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="form-group">
-                    <label>Nom d'utilisateur</label>
-                    <input asp-for="UserName" class="form-control" />
-                    <span asp-validation-for="UserName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label>Mot de passe</label>
-                    <input asp-for="Password" class="form-control" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <div class="checkbox">
-                        <label>
-                            <input asp-for="RememberMe" />
-                            Se souvenir de moi ?
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <button type="submit" asp-action="Login" class="btn btn-primary">Se connecter</button>
-                </div>
-                @*<div class="form-group">
-                    <p>
-                        <a id="forgot-password"  asp-re="./ForgotPassword">Mot de passe oublié ?</a>
-                    </p>
-                </div>*@
-            </form>
-        </section>
-    </div>
+<div class="container__form container--signin">
+    <form class="form" id="form2">
+        <h2 class="form__title">@ViewData["Title"]</h2>
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <input asp-for="UserName" type="text" placeholder="Nom d'utilisateur" class="input" />
+        <span asp-validation-for="UserName" class="text-danger"></span>
+        <input asp-for="Password" type="password" placeholder="Mot de passe" class="input" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+        <a href="#" class="link">Mot de passe oublié ?</a>
+        <button id="loginBtn" type="button" class="btn">Se connecter</button>
+    </form>
 </div>
+
+@section Scripts {
+    <script>
+        $("#loginBtn").click(function () {
+            $.ajax({
+                type: 'POST',
+                
+            })
+        })
+    </script>
+    
+}
+
+
 
 

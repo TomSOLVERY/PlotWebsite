@@ -1,0 +1,60 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutNotConnected.cshtml";
+    ViewData["Title"] = "Connexion";
+
+}
+@*<partial name="Register.cshtml" />
+<partial name="Login.cshtml" />
+<div class="container right-panel-active">
+     Overlay 
+    <div class="container__overlay">
+        <div class="overlay">
+            <div class="overlay__panel overlay--left">
+                <button class="btn"  id="signIn">Se connecter</button>
+            </div>
+            <div class="overlay__panel overlay--right">
+                <button class="btn" id="signUp">S'inscrire</button>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+    <div class="container right-panel-active">
+        <!-- Sign Up -->
+        <partial name="Register.cshtml"/>
+
+        <!-- Sign In -->
+        <partial name="Login.cshtml"/>
+
+        <!-- Overlay -->
+        <div class="container__overlay">
+            <div class="overlay">
+                <div class="overlay__panel overlay--left">
+                    <button class="btn" id="signIn">Se connecter</button>
+                </div>
+                <div class="overlay__panel overlay--right">
+                    <button class="btn" id="signUp">S'identifier</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@section Scripts {
+    <script>
+        const signInBtn = document.getElementById("signIn");
+        const signUpBtn = document.getElementById("signUp");
+        const fistForm = document.getElementById("form1");
+        const secondForm = document.getElementById("form2");
+        const container = document.querySelector(".container");
+
+        signInBtn.addEventListener("click", () => {
+            container.classList.remove("right-panel-active");
+        });
+
+        signUpBtn.addEventListener("click", () => {
+            container.classList.add("right-panel-active");
+        });
+
+        fistForm.addEventListener("submit", (e) => e.preventDefault());
+        secondForm.addEventListener("submit", (e) => e.preventDefault());
+    </script>
+}

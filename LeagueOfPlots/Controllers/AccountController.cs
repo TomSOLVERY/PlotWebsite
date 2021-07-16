@@ -27,7 +27,7 @@ namespace LeagueOfPlots.Controllers
         {
             if(this.User.Identity.IsAuthenticated)
                 return LocalRedirect("~/");
-            return this.View();
+            return this.View("~/Views/Account/LoginView.cshtml");
         }
 
         [HttpGet]
