@@ -5,22 +5,22 @@
 
 <div class="row">
     <div class="col-md-12">
-        <button id="rename" class="btn btn-success float-right" type="button" title="Renommer la photo">
-            <i class="fas fa-edit"></i>&nbsp;Renommer la photo
-        </button>
-        <form method="post" class="float-right" style="margin-left:5px">
-            <input type="text" name="name" class="form-control" aria-label="Name" required value="@Model.Name" />
-            <button class="btn btn-success d-none" id="triggerRename" type="submit" asp-action="Rename" asp-route-Id="@this.Model.Id">
+        <div style="padding-top:20px;">
+            <button id="rename" class="btn btn-success float-right" type="button" title="Renommer la photo" style="margin-left:10px;">
+                <i class="fas fa-edit"></i>&nbsp;Renommer la photo
             </button>
-        </form>
-
-
-        <form method="post" class="delete float-right">
-            <button class="btn btn-danger" type="submit" asp-action="Delete" asp-route-Id="@this.Model.Id" title="Supprimer la photo">
-                <i class="fas fa-trash"></i>Supprimer la photo
-            </button>
-        </form>
-        <div class="title" itemscope itemtype="http://schema.org/ListItem" itemprop="itemListElement">
+            <form method="post" class="float-right" style="margin-left:10px; width:300px;">
+                <input type="text" name="name" class="form-control" aria-label="Name" required value="@Model.Name" />
+                <button class="btn btn-success d-none" id="triggerRename" type="submit" asp-action="Rename" asp-route-Id="@this.Model.Id">
+                </button>
+            </form>
+            <form method="post" class="delete float-right">
+                <button class="btn btn-danger" type="submit" asp-action="Delete" asp-route-Id="@this.Model.Id" title="Supprimer la photo">
+                    <i class="fas fa-trash"></i>&nbsp;Supprimer la photo
+                </button>
+            </form>
+        </div>
+        <div class="title" itemscope itemtype="http://schema.org/ListItem" itemprop="itemListElement" style="margin-top:0px;">
             <paging model="@Model" />
             <h2 itemscope itemtype="http://schema.org/Thing" itemprop="item">
                 <span itemprop="name">@Model.Name</span>

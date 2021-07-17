@@ -8,11 +8,14 @@
     <form method="post" asp-action="login" asp-controller="account" class="form" id="form2">
         <input id="isFormValidLogin" name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
         <h2 class="form__title">@ViewData["Title"]</h2>
-        <div asp-validation-summary="All" class="text-danger"></div>
         <input asp-for="UserName" type="text" placeholder="Nom d'utilisateur" class="input" />
         <span asp-validation-for="UserName" class="text-danger"></span>
         <input asp-for="Password" type="password" placeholder="Mot de passe" class="input" />
         <span asp-validation-for="Password" class="text-danger"></span>
+        <div class="form-group" style="margin: 0.5rem 0;">
+            <span>Restez connecté ?</span>
+            <input asp-for="RememberMe" type="checkbox" placeholder="Se souvenir de moi ?" />
+        </div>
         <a href="#" class="link">Mot de passe oublié ?</a>
         <button id="loginBtn" type="submit" class="btn">Se connecter</button>
     </form>

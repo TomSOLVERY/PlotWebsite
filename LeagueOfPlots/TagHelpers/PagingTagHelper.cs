@@ -21,22 +21,22 @@ namespace LeagueOfPlots.TagHelpers
 
             if (Model.Previous != null)
             {
-                output.Content.AppendHtml($"<a href=\"{Model.Previous.Link}\" rel=\"prev\" title=\"{Model.Previous.Name}\">&lt; Prev</a>");
+                output.Content.AppendHtml($"<a href=\"{Model.Previous.Link}\" rel=\"prev\" title=\"{Model.Previous.Name}\">&lt; Précédent</a>");
             }
             else
             {
-                output.Content.AppendHtml("<span>&lt; Prev</span>");
+                output.Content.AppendHtml("<span>&lt; Précédent</span>");
             }
 
             output.Content.AppendHtml(" | ");
 
             if (Model.Next != null)
             {
-                output.Content.AppendHtml($"<a href=\"{Model.Next.Link}\" rel=\"next\" title=\"{Model.Next.Name}\">Next &gt;</a>");
+                output.Content.AppendHtml($"<a href=\"{Model.Next.Link}\" rel=\"next\" title=\"{Model.Next.Name}\">Suivant &gt;</a>");
             }
             else
             {
-                output.Content.AppendHtml("<span>Next &gt;</span>");
+                output.Content.AppendHtml("<span>Suivant &gt;</span>");
             }
         }
     }

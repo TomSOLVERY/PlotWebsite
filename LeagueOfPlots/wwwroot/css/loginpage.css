@@ -22,7 +22,6 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     display: grid;
-    height: 100vh;
     place-items: center;
 }
 

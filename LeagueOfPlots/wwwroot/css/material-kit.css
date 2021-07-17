@@ -165,15 +165,15 @@ sup {
 }
 
 a {
-  color: #9c27b0;
-  text-decoration: none;
-  background-color: transparent;
-  -webkit-text-decoration-skip: objects;
+    color: #FF9933;
+    text-decoration: none;
+    background-color: transparent;
+    -webkit-text-decoration-skip: objects;
 }
 
 a:hover {
-  color: #641971;
-  text-decoration: underline;
+    color: #E78A2E;
+    text-decoration: underline;
 }
 
 a:not([href]):not([tabindex]) {
@@ -9432,7 +9432,7 @@ a.text-dark:focus {
 
 .text-muted,
 .bmd-help {
-  color: #6c757d !important;
+  color:white !important;
 }
 
 .text-hide {
@@ -11612,14 +11612,14 @@ legend {
 }
 
 a {
-  color: #9c27b0;
+    color: #FF9A36;
 }
 
-a:hover,
-a:focus {
-  color: #89229b;
-  text-decoration: none;
-}
+    a:hover,
+    a:focus {
+        color: #E2872D;
+        text-decoration: none;
+    }
 
 a.text-info:hover,
 a.text-info:focus {
@@ -15459,7 +15459,6 @@ small,
 }
 
 .title,
-.title a,
 .card-title,
 .card-title a,
 .info-title,
