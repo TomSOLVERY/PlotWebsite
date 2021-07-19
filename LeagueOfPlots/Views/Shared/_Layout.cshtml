@@ -11,12 +11,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>@ViewData["Title"] - Les Plots</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/gallery.scss" asp-append-version="true" />
     <link rel="shortcut icon" type="image/x-icon" href="@Url.Content("~/favicon.ico")" asp-append-version="true" />
-    <link href="~/css/material-kit.css?v=2.0.4" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
+    <link href="~/css/material-kit.css?v=2.0.4" rel="stylesheet" asp-append-version="true" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" asp-append-version="true" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
 
 </head>
@@ -32,14 +32,14 @@
 </style>
 <body>
 
-    <nav class="navbar navbar-color-on-scroll fixed-top navbar-expand-lg bg-warning" style="padding:0px;">
+    <nav id="mainNav" class="navbar customed navbar-color-on-scroll fixed-top navbar-expand-lg" style="padding:0px;">
         <div class="container">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-bar navbar-kebab"></span>
                 <span class="navbar-toggler-bar navbar-kebab"></span>
                 <span class="navbar-toggler-bar navbar-kebab"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="collapse navbar-collapse">
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="Home" asp-action="Index">Accueil</a>
@@ -49,10 +49,10 @@
                     </li>
                 </ul>
             </div>
-            <div>
-                <h1 style="color:black; font-family:Starlight">Les Plots</h1>
+            <div class="signPlot">
+                <h1>Les Plots</h1>
             </div>
-            <div class="collapse navbar-collapse float-right" id="navbarNav" style="margin-right:auto;margin-left:auto;">
+            <div class="collapse navbar-collapse float-right"  style="margin-right:auto;margin-left:auto;">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item user-menu">
                         <a class="nav-link" style="display:contents" asp-area="" asp-controller="Account" asp-action="Index">
@@ -96,6 +96,16 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Material Kit: parallax effects, scripts for the example pages etc -->
     <script src="~/js/material-kit.js?v=2.0.4" type="text/javascript"></script>
+    <script>
+        $(window).on('scroll', function () {
+            if ($(document).scrollTop() > 20) {
+                $(".customed").addClass('scrolled')
+
+            } else {
+                $(".customed").removeClass('scrolled')
+            }
+        });
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
