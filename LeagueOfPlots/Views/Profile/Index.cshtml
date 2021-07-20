@@ -1,8 +1,21 @@
 ﻿@{
     ViewData["Title"] = "Profil";
 }
-<div class="text-center">
-    <h1 class="display-4">Bienvenue sur League of Plots</h1>
-    <h1 class="display-3">Prochainement... Un site spécial PLOT</h1>
+
+@model LeagueOfPlots.ViewModels.ViewModelProfile
+<div class="profile-container">
+    <div class="box">
+        <div class="box-header">
+            <div class="profile-photo">
+                <img src="@this.Model.Avatar" />
+            </div>
+            <h1>Ton Profil</h1>
+            <h3>@this.Model.FirstName @this.Model.LastName</h3>
+        </div>
+        <div class="box-content">
+            <label>Email</label>
+        </div>
+    </div>
 </div>
+
 

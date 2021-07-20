@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LeagueOfPlots.Core;
 using LeagueOfPlots.Models;
+using LeagueOfPlots.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,9 +18,13 @@ namespace LeagueOfPlots.Controllers
         {
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return this.View();
+            ApplicationUser user = await this.UserManager.GetUserAsync(this.User);
+            if (user == null)
+                return this.NotFound();
+            ViewModelProfile vm = new ViewModelProfile(user);
+            return this.View(vm);
         } 
     }
 }

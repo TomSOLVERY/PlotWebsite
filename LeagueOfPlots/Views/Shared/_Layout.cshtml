@@ -19,11 +19,12 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
 
+
 </head>
 <style>
     body {
         background-color: var(--white);
-        background: url("/img/background2.jpg");
+        background: url("/img/background.jpg");
         background-attachment: fixed;
         background-position: center;
         background-repeat: no-repeat;
@@ -55,9 +56,9 @@
             <div class="collapse navbar-collapse float-right"  style="margin-right:auto;margin-left:auto;">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item user-menu">
-                        <a class="nav-link" style="display:contents" asp-area="" asp-controller="Account" asp-action="Index">
+                        <a class="nav-link" style="display:contents" asp-controller="Profile" asp-action="Index">
                             <img src="~/img/avatar.png" height="40" width="40" class="user-image" alt="Image Utilisateur" />
-                            <span class="d-none d-md-inline-block">@user.UserName</span>
+                            <span class="d-none d-md-inline-block">@user.FirstName</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -100,9 +101,11 @@
         $(window).on('scroll', function () {
             if ($(document).scrollTop() > 20) {
                 $(".customed").addClass('scrolled')
+                $(".nav-link").addClass('scrolled-link');
 
             } else {
                 $(".customed").removeClass('scrolled')
+                $(".nav-link").removeClass('scrolled-link');
             }
         });
     </script>
