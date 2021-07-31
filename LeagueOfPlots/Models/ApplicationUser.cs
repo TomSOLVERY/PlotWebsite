@@ -12,5 +12,9 @@ namespace LeagueOfPlots.Models
         public String FirstName { get; set; }
         public String LastName { get; set; }
         public Byte[] Avatar { get; set; }
+        public String Twitter { get; set; }
+        public String Facebook { get; set; }
+        public String Instagram { get; set; }
+        public Int32 FauxFrerotPoints { get; set; }
     }
 }

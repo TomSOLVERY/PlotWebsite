@@ -23,7 +23,7 @@ namespace LeagueOfPlots.Controllers
             ApplicationUser user = await this.UserManager.GetUserAsync(this.User);
             if (user == null)
                 return this.NotFound();
-            ViewModelProfile vm = new ViewModelProfile(user);
+            ViewModelProfile vm = new ViewModelProfile(user,this.ApplicationDbContext);
             return this.View(vm);
         } 
     }

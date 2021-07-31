@@ -23,6 +23,10 @@ namespace LeagueOfPlots.Models.Configurations
             builder.Property(x => x.NormalizedUserName).HasColumnName("NORMALIZED_USERNAME");
             builder.Property(x => x.ConcurrencyStamp).HasColumnName("CONCURRENCY_STAMP");
             builder.Property(x => x.SecurityStamp).HasColumnName("SECURITY_STAMP");
+            builder.Property(x => x.Instagram).HasColumnName("INSTAGRAM");
+            builder.Property(x => x.Facebook).HasColumnName("FACEBOOK");
+            builder.Property(x => x.Twitter).HasColumnName("TWITTER");
+            builder.Property(x => x.FauxFrerotPoints).HasColumnName("FAUX_FREROT_POINTS").IsRequired().HasDefaultValue(0);
             builder.Ignore(x => x.AccessFailedCount);
             builder.Ignore(x => x.EmailConfirmed);
             builder.Ignore(x => x.NormalizedEmail);

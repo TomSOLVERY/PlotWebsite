@@ -5,15 +5,73 @@
 @model LeagueOfPlots.ViewModels.ViewModelProfile
 <div class="profile-container">
     <div class="box">
-        <div class="box-header">
-            <div class="profile-photo">
-                <img src="@this.Model.Avatar" />
+        <div class="row">
+            <div class="box-left col-md-4">
+                <div class="profile-photo">
+                    <img src="@this.Model.Avatar" />
+                </div>
+                <h6>@this.Model.FirstName @this.Model.LastName</h6>
+                <label>Classement Faux-Frérot :</label>
+                @if (this.Model.FauxFrerotLadder == "1er")
+                {
+                    <p>@this.Model.FauxFrerotLadder&nbsp;<i class="fas fa-trophy trophy-1"></i></p>
+                }
+                else if (this.Model.FauxFrerotLadder == "2ème")
+                {
+                    <p>@this.Model.FauxFrerotLadder&nbsp;<i class="fas fa-trophy trophy-2"></i></p>
+                }
+                else if (this.Model.FauxFrerotLadder == "3ème")
+                {
+                    <p>@this.Model.FauxFrerotLadder&nbsp;<i class="fas fa-trophy trophy-3"></i></p>
+                }
+                else
+                {
+                    <p>@this.Model.FauxFrerotLadder</p>
+                }
             </div>
-            <h1>Ton Profil</h1>
-            <h3>@this.Model.FirstName @this.Model.LastName</h3>
-        </div>
-        <div class="box-content">
-            <label>Email</label>
+            <div class="box-right col-md-8">
+                <div class="row" style=" border-bottom: 1px solid #e0e0e0; margin-bottom:20px;">
+                    <div class="col-md-6">
+                        <p class="profile-section-title">Information</p>
+                    </div>
+                    <div class="col-md-6">
+                        <a class="float-right" style="cursor:pointer;"><i class="fas fa-edit"></i></a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="profile-subsection-title">Email</p>
+                        <p class="profile-info">@this.Model.Email</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="profile-subsection-title">Date de naissance</p>
+                        <p class="profile-info">@this.Model.BirthDate.Date.ToString("dd/MM/yyyy")</p>
+                    </div>
+                </div>
+                <div class="row" style=" border-bottom: 1px solid #e0e0e0; margin-bottom:20px;">
+                    <div class="col-md-6">
+                        <p class="profile-section-title">Réseaux Sociaux</p>
+                    </div>
+                    <div class="col-md-6">
+                        <a class="float-right" style="cursor:pointer;"><i class="fas fa-edit"></i></a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="profile-subsection-title"><i class="fab fa-facebook-square facebook-icon"></i>&nbsp;Facebook</p>
+                        <p class="profile-info">@this.Model.Facebook</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="profile-subsection-title"><i class="fab fa-twitter-square twitter-icon"></i>&nbsp;Twitter</p>
+                        <p class="profile-info">@this.Model.Twitter</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="profile-subsection-title"><i class="fab fa-instagram instagram-icon"></i>&nbsp;Instagram</p>
+                        <p class="profile-info">@this.Model.Instagram</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
