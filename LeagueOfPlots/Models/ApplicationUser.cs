@@ -16,5 +16,6 @@ namespace LeagueOfPlots.Models
         public String Facebook { get; set; }
         public String Instagram { get; set; }
         public Int32 FauxFrerotPoints { get; set; }
+        public DateTime BirthDate { get; set; }
     }
 }

@@ -1,0 +1,28 @@
+﻿@model LeagueOfPlots.ViewModels.ViewModelProfileEditInfo
+<form id="mainForm" class="modal-form">
+    <div class="modal-dialog modal-plot-size">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h5 class="modal-title">Modifier les informations</h5>
+            </div>
+            <div class="modal-body">
+                <input id="isFormValid" name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                <div class="form-group">
+                    <label>Email</label>
+                    <input asp-for="Email" type="text" placeholder="Email" class="input" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label>Date de naissance</label>
+                    <input asp-for="BirthDate" type="date" placeholder="Date de naissance" class="input" />
+                    <span asp-validation-for="BirthDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger float-left mr-auto" data-dismiss="modal">annuler</button>
+                <button type="button" class="btn btn-success" id="buttonValidate">OK</button>
+
+            </div>
+        </div>
+    </div>
+</form>

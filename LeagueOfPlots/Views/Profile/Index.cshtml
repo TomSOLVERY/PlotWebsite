@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Profil";
 }
-
+@using LeagueOfPlots.Helpers 
 @model LeagueOfPlots.ViewModels.ViewModelProfile
 <div class="profile-container">
     <div class="box">
@@ -35,7 +35,7 @@
                         <p class="profile-section-title">Information</p>
                     </div>
                     <div class="col-md-6">
-                        <a class="float-right" style="cursor:pointer;"><i class="fas fa-edit"></i></a>
+                        <a id="infoButton" class="float-right" style="cursor:pointer;"><i class="fas fa-edit"></i></a>
                     </div>
                 </div>
 
@@ -54,26 +54,106 @@
                         <p class="profile-section-title">Réseaux Sociaux</p>
                     </div>
                     <div class="col-md-6">
-                        <a class="float-right" style="cursor:pointer;"><i class="fas fa-edit"></i></a>
+                        <a id="socialNetworksButton" class="float-right" style="cursor:pointer;"><i class="fas fa-edit"></i></a>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <p class="profile-subsection-title"><i class="fab fa-facebook-square facebook-icon"></i>&nbsp;Facebook</p>
-                        <p class="profile-info">@this.Model.Facebook</p>
+                        <a class="profile-info" href="@SocialNetworksConstants.Facebook@this.Model.Facebook" target="_blank">@this.Model.Facebook</a>
                     </div>
                     <div class="col-md-6">
                         <p class="profile-subsection-title"><i class="fab fa-twitter-square twitter-icon"></i>&nbsp;Twitter</p>
-                        <p class="profile-info">@this.Model.Twitter</p>
+                        <a class="profile-info" href="@SocialNetworksConstants.Twitter@this.Model.Twitter" target="_blank">@(String.IsNullOrEmpty(this.Model.Twitter)?"":"@")@this.Model.Twitter</a>
                     </div>
                     <div class="col-md-6">
                         <p class="profile-subsection-title"><i class="fab fa-instagram instagram-icon"></i>&nbsp;Instagram</p>
-                        <p class="profile-info">@this.Model.Instagram</p>
+                        <a class="profile-info" href="@SocialNetworksConstants.Instagram@this.Model.Instagram" target="_blank">@this.Model.Instagram</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<plot-modal/>
+@section Scripts{ 
+    <script>
+        $("#infoButton").click(function () {
+            $.ajax({
+                type: 'GET',
+                url: '/Profile/UpdateInformation',
+                success: function (data) {
+                    $("#main-modal").html(data);
+                    $("#main-modal").modal("show");
+                    $("#buttonValidate").click(function () {
+                        validateUpdateInformation();
+                    })
+                }
+            })
+        })
 
+        function validateUpdateInformation() {
+            $.ajax({
+                type: 'POST',
+                url: '/Profile/UpdateInformation',
+                contentType: !1,
+                cache: !1,
+                processData: !1,
+                data: new FormData($("#mainForm").get(0)),
+                success: function (data) {
+                    $("#main-modal").html(data);
+                    if ($("#isFormValid").val() === "True") {
+                        $("#main-modal").modal("toggle");
+                        $("#mainForm").trigger("reset");
+                        location.href = "/Profile";
+                    } else {
+                        $("#buttonValidate").click(function () {
+                            validateUpdateInformation();
+                        })
+                    }
+                }
+            })
+        }
+
+
+
+
+        $("#socialNetworksButton").click(function () {
+            $.ajax({
+                type: 'GET',
+                url: '/Profile/UpdateSocialNetworks',
+                success: function (data) {
+                    $("#main-modal").html(data);
+                    $("#main-modal").modal("show");
+                    $("#buttonValidate").click(function () {
+                        validateUpdateSocialNetworks();
+                    })
+                }
+            })
+        })
+
+        function validateUpdateSocialNetworks() {
+            $.ajax({
+                type: 'POST',
+                url: '/Profile/UpdateSocialNetworks',
+                contentType: !1,
+                cache: !1,
+                processData: !1,
+                data: new FormData($("#mainForm").get(0)),
+                success: function (data) {
+                    $("#main-modal").html(data);
+                    if ($("#isFormValid").val() === "True") {
+                        $("#main-modal").modal("toggle");
+                        $("#mainForm").trigger("reset");
+                        location.href = "/Profile";
+                    } else {
+                        $("#buttonValidate").click(function () {
+                            validateUpdateSocialNetworks();
+                        })
+                    }
+                }
+            })
+        }
+    </script>
+}
 

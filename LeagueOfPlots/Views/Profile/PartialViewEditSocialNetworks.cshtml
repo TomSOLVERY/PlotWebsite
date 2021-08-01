@@ -1,0 +1,34 @@
+﻿@model LeagueOfPlots.ViewModels.ViewModelProfileEditSN
+<form id="mainForm" class="modal-form">
+    <div class="modal-dialog modal-plot-size">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h5 class="modal-title">Modifier les réseaux Sociaux</h5>
+            </div>
+            <div class="modal-body">
+                <input id="isFormValid" name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                <div class="form-group">
+                    <label><i class="fab fa-facebook-square facebook-icon"></i>&nbsp;Lien du profil Facebook</label>
+                    <input asp-for="Facebook" type="text" placeholder="Facebook" class="input" />
+                    <span asp-validation-for="Facebook" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label><i class="fab fa-twitter-square twitter-icon"></i>&nbsp;Lien du profil Twitter</label>
+                    <input asp-for="Twitter" type="text" placeholder="Twitter" class="input" />
+                    <span asp-validation-for="Twitter" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label><i class="fab fa-instagram instagram-icon"></i>&nbsp;Lien du profil Instagram</label>
+                    <input asp-for="Instagram" type="text" placeholder="Instagram" class="input" />
+                    <span asp-validation-for="Instagram" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger float-left mr-auto" data-dismiss="modal">annuler</button>
+                <button type="button" class="btn btn-success" id="buttonValidate">OK</button>
+
+            </div>
+        </div>
+    </div>
+</form>
+

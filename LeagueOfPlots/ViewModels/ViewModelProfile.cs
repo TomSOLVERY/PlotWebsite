@@ -19,6 +19,7 @@ namespace LeagueOfPlots.ViewModels
             this.Instagram = user.Instagram;
             this.Facebook = user.Facebook;
             this.Twitter = user.Twitter;
+            this.BirthDate = user.BirthDate.Date;
             this.FauxFrerotLadder = FauxFrerotLadderHelper.LadderToString(dbContext.Users.Select(x => x.FauxFrerotPoints).OrderBy(x => x).Distinct().ToList().IndexOf(user.FauxFrerotPoints) + 1);
         }
 

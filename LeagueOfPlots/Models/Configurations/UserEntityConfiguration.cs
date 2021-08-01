@@ -27,6 +27,7 @@ namespace LeagueOfPlots.Models.Configurations
             builder.Property(x => x.Facebook).HasColumnName("FACEBOOK");
             builder.Property(x => x.Twitter).HasColumnName("TWITTER");
             builder.Property(x => x.FauxFrerotPoints).HasColumnName("FAUX_FREROT_POINTS").IsRequired().HasDefaultValue(0);
+            builder.Property(x => x.BirthDate).HasColumnName("BIRTHDATE").IsRequired().HasDefaultValue(new DateTime());
             builder.Ignore(x => x.AccessFailedCount);
             builder.Ignore(x => x.EmailConfirmed);
             builder.Ignore(x => x.NormalizedEmail);

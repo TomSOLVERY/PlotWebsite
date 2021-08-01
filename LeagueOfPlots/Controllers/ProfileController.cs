@@ -26,5 +26,51 @@ namespace LeagueOfPlots.Controllers
             ViewModelProfile vm = new ViewModelProfile(user,this.ApplicationDbContext);
             return this.View(vm);
         } 
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateInformation()
+        {
+            ApplicationUser user = await this.UserManager.GetUserAsync(this.User);
+            if (user == null)
+                return this.NotFound();
+            ViewModelProfileEditInfo vm = new ViewModelProfileEditInfo(user);
+            return this.PartialView("PartialViewEditInformation",vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateInformation(ViewModelProfileEditInfo vm)
+        {
+            if(!this.ModelState.IsValid)
+                return this.PartialView("PartialViewEditInformation", vm);
+            ApplicationUser user = await this.UserManager.GetUserAsync(this.User);
+            if (user == null)
+                return this.NotFound();
+            vm.UpdateModel(user);
+            this.ApplicationDbContext.SaveChanges();
+            return this.PartialView("PartialViewEditInformation", vm);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateSocialNetworks()
+        {
+            ApplicationUser user = await this.UserManager.GetUserAsync(this.User);
+            if (user == null)
+                return this.NotFound();
+            ViewModelProfileEditSN vm = new ViewModelProfileEditSN(user);
+            return this.PartialView("PartialViewEditSocialNetworks", vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateSocialNetworks(ViewModelProfileEditSN vm)
+        {
+            if (!this.ModelState.IsValid)
+                return this.PartialView("PartialViewEditSocialNetworks", vm);
+            ApplicationUser user = await this.UserManager.GetUserAsync(this.User);
+            if (user == null)
+                return this.NotFound();
+            vm.UpdateModel(user);
+            this.ApplicationDbContext.SaveChanges();
+            return this.PartialView("PartialViewEditSocialNetworks", vm);
+        }
     }
 }
