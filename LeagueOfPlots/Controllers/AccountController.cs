@@ -79,7 +79,7 @@ namespace LeagueOfPlots.Controllers
                 }
                 foreach (var error in result.Errors)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    ModelState.AddModelError(nameof(vm.Password), error.Description);
                 }
             }
             return this.View("~/Views/Account/Registration.cshtml", vm);
@@ -105,7 +105,7 @@ namespace LeagueOfPlots.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Nom d'utilisateur ou mot de passe invalide");
+                    ModelState.AddModelError(nameof(vm.UserName), "Nom d'utilisateur ou mot de passe invalide");
                     return this.View("~/Views/Account/LoginView.cshtml");
                 }
             }

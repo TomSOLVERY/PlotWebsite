@@ -18,9 +18,9 @@ namespace LeagueOfPlots.Models.Gallery
         public Int32 Id { get; set; }
         public String Name { get; set; }
         public String AuthorUsername { get; set; }
-        public virtual List<Photo> Photos { get; set; }
+        public List<Photo> Photos { get; set; }
         public Int32? CoverPhotoId { get; set; }
-        public virtual Photo CoverPhoto { get; set; }
+        public Photo CoverPhoto { get; set; }
         public Int32 PhotoCount { get; set; }
         /// <summary>
         /// Sorts the photos in the album.

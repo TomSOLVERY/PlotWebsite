@@ -21,6 +21,8 @@ namespace LeagueOfPlots.ViewModels
             this.Twitter = user.Twitter;
             this.BirthDate = user.BirthDate.Date;
             this.FauxFrerotLadder = FauxFrerotLadderHelper.LadderToString(dbContext.Users.Select(x => x.FauxFrerotPoints).OrderBy(x => x).Distinct().ToList().IndexOf(user.FauxFrerotPoints) + 1);
+            this.Points = user.FauxFrerotPoints;
+
         }
 
         public String FirstName { get; set; }
@@ -33,5 +35,6 @@ namespace LeagueOfPlots.ViewModels
         public String Facebook { get; set; }
         public String Twitter { get; set; }
         public String FauxFrerotLadder { get; set; }
+        public Int32 Points { get; set; }
     }
 }

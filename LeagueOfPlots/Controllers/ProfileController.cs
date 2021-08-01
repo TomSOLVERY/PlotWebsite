@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using LeagueOfPlots.Core;
+using LeagueOfPlots.Helpers;
 using LeagueOfPlots.Models;
 using LeagueOfPlots.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -71,6 +74,23 @@ namespace LeagueOfPlots.Controllers
             vm.UpdateModel(user);
             this.ApplicationDbContext.SaveChanges();
             return this.PartialView("PartialViewEditSocialNetworks", vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateAvatar(IFormFile avatar)
+        {
+            if (avatar == null)
+                return this.BadRequest();
+            ApplicationUser user = await this.UserManager.GetUserAsync(this.User);
+            if (user == null)
+                return this.NotFound();
+            using(MemoryStream memoryStream = new MemoryStream())
+            {
+                await avatar.CopyToAsync(memoryStream);
+                user.Avatar = ImageHelper.Resize(memoryStream.ToArray(), 128, 128);
+            }
+            this.ApplicationDbContext.SaveChanges();
+            return this.Ok();
         }
     }
 }

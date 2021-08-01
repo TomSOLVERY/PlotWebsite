@@ -25,7 +25,7 @@ namespace LeagueOfPlots.Models.Gallery
 
         public Int32 Id { get; set; }
         public Int32 AlbumId { get; set; }
-        public virtual PhotoContent Content { get; set; }
+        public PhotoContent Content { get; set; }
         public Byte[] Thumbnail {
             get
             {
@@ -34,7 +34,7 @@ namespace LeagueOfPlots.Models.Gallery
         }
         public String Name { get; set; }
         public String Extension { get; set; }
-        public virtual Album Album { get; set; }
+        public Album Album { get; set; }
         public override string ToString()
         {
             return this.Name + this.Extension;

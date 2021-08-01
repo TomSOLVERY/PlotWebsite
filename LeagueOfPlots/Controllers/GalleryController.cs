@@ -22,7 +22,7 @@ namespace LeagueOfPlots.Controllers
         public const int CacheAgeSeconds = 60 * 60 * 24 * 30; // 30 days
         public IActionResult Index()
         {
-            List<Album> albums = this.ApplicationDbContext.Albums.ToList();
+            List<Album> albums = this.ApplicationDbContext.Albums.Include(x => x.CoverPhoto).ThenInclude(x => x.Content).ToList();
             Response.Headers["Cache-Control"] = $"private,max-age={CacheAgeSeconds}";
             return View(new ViewModelGallery(albums));
         }

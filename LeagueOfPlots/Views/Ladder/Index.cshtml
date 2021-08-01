@@ -1,4 +1,49 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model LeagueOfPlots.ViewModels.ViewModelLadder
 @{ ViewData["Title"] = "Classement"; }
+
+    <div class="container">
+        <h2>Classement du Faux Frérot @DateTime.Now.Year</h2>
+        <ul class="responsive-table">
+            <li class="table-header">
+                <div class="col col-1">Placement</div>
+                <div class="col col-2">Nom</div>
+                <div class="col col-3">Points</div>
+
+            </li>
+            @foreach (var el in this.Model.Rows)
+            {
+                if (el.LadderPlace == "1er")
+                {
+                    <li class="table-row" data-id="@el.Id">
+                        <div class="col col-1" data-label="Placement"><i class="fas fa-trophy trophy-1"></i>&nbsp;@el.LadderPlace</div>
+                        <div class="col col-2" data-label="Nom"><img class="ladderAvatar" src="@el.Avatar" align="left" />&nbsp;@el.Name</div>
+                        <div class="col col-3" data-label="Points">@(el.Points)<sub>pts</sub></div>
+                    </li>
+                }
+                else if (el.LadderPlace == "2ème")
+                {
+                    <li class="table-row" data-id="@el.Id">
+                        <div class="col col-1" data-label="Placement"><i class="fas fa-trophy trophy-2"></i>&nbsp;@el.LadderPlace</div>
+                        <div class="col col-2" data-label="Nom"><img class="ladderAvatar" src="@el.Avatar" />&nbsp;@el.Name</div>
+                        <div class="col col-3" data-label="Points">@(el.Points)<sub>pts</sub></div>
+                    </li>
+                }
+                else if (el.LadderPlace == "3ème")
+                {
+                    <li class="table-row" data-id="@el.Id">
+                        <div class="col col-1" data-label="Placement"><i class="fas fa-trophy trophy-3"></i>&nbsp;@el.LadderPlace</div>
+                        <div class="col col-2" data-label="Nom"><img class="ladderAvatar" src="@el.Avatar" />&nbsp;@el.Name</div>
+                        <div class="col col-3" data-label="Points">@(el.Points)<sub>pts</sub></div>
+                    </li>
+                }
+                else
+                {
+                    <li class="table-row" data-id="@el.Id">
+                        <div class="col col-1" data-label="Placement">@el.LadderPlace</div>
+                        <div class="col col-2" data-label="Nom"><img class="ladderAvatar" src="@el.Avatar" />&nbsp;@el.Name</div>
+                        <div class="col col-3" data-label="Points">@(el.Points)<sub>pts</sub></div>
+                    </li>
+                }
+            }
+        </ul>
+    </div>

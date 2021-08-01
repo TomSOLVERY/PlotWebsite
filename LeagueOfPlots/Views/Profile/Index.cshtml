@@ -8,25 +8,26 @@
         <div class="row">
             <div class="box-left col-md-4">
                 <div class="profile-photo">
-                    <img src="@this.Model.Avatar" />
+                    <input type="file" accept="image/*" id="imageUpload" style="display:none"/>
+                    <img id="addProfileAvatar" src="@this.Model.Avatar" />
                 </div>
                 <h6>@this.Model.FirstName @this.Model.LastName</h6>
                 <label>Classement Faux-Frérot :</label>
                 @if (this.Model.FauxFrerotLadder == "1er")
                 {
-                    <p>@this.Model.FauxFrerotLadder&nbsp;<i class="fas fa-trophy trophy-1"></i></p>
+            <p>@this.Model.FauxFrerotLadder&nbsp;<i class="fas fa-trophy trophy-1"></i> avec @(this.Model.Points)pts</p>
                 }
                 else if (this.Model.FauxFrerotLadder == "2ème")
                 {
-                    <p>@this.Model.FauxFrerotLadder&nbsp;<i class="fas fa-trophy trophy-2"></i></p>
+            <p>@this.Model.FauxFrerotLadder&nbsp;<i class="fas fa-trophy trophy-2"></i> avec @(this.Model.Points)pts</p>
                 }
                 else if (this.Model.FauxFrerotLadder == "3ème")
                 {
-                    <p>@this.Model.FauxFrerotLadder&nbsp;<i class="fas fa-trophy trophy-3"></i></p>
+            <p>@this.Model.FauxFrerotLadder&nbsp;<i class="fas fa-trophy trophy-3"></i> avec @(this.Model.Points)pts</p>
                 }
                 else
                 {
-                    <p>@this.Model.FauxFrerotLadder</p>
+            <p>@this.Model.FauxFrerotLadder avec @(this.Model.Points)pts</p>
                 }
             </div>
             <div class="box-right col-md-8">
@@ -78,6 +79,28 @@
 <plot-modal/>
 @section Scripts{ 
     <script>
+        $("#addProfileAvatar").click(function () {
+            debugger;
+            $("#imageUpload").click();
+        })
+
+        $("#imageUpload").change(function () {
+            debugger;
+            var formdata = new FormData();
+            formdata.append("avatar", this.files[0]);
+            $.ajax({
+                type: 'POST',
+                url: "/Profile/UpdateAvatar",
+                contentType: !1,
+                cache: !1,
+                processData: !1,
+                data: formdata,
+                success: function (data) {
+                    location.href = "/Profile";
+                }
+            });
+        });
+
         $("#infoButton").click(function () {
             $.ajax({
                 type: 'GET',

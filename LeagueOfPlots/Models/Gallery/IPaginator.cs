@@ -7,12 +7,12 @@ namespace LeagueOfPlots.Models.Gallery
 {
     public interface IPaginator
     {
-        string Name { get; }
+        String Name { get; }
 
-        string Link { get; }
+        String Link { get; }
 
-        IPaginator Next { get; }
+        String Previous { get; set; }
 
-        IPaginator Previous { get; }
+        String Next { get; set; }
     }
 }

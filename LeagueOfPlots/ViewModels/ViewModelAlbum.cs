@@ -10,23 +10,23 @@ namespace LeagueOfPlots.ViewModels
     public class ViewModelAlbum : IPaginator
     {
         public ViewModelAlbum() { }
-        public ViewModelAlbum(Album model, List<Album> albums)
+        public ViewModelAlbum(Album model, List<Int32> albums)
         {
             this.Id = model.Id;
-            this.Name = model.Name;
-            this.Photos = new List<ViewModelPhoto>();
-            foreach(var photo in model.Photos)
-            {
-                this.Photos.Add(new ViewModelPhoto(photo, model.Photos));
-            }
-            this.Albums = albums;
+            this.Name = model.Name;            
             this.Thumbnail = model.CoverPhoto?.Thumbnail == null ? null : "data:image/png;base64," + Convert.ToBase64String(model.CoverPhoto.Thumbnail);
-            this.Index = albums.IndexOf(model);
+            this.Index = albums.IndexOf(model.Id);
+            this.Next = this.Index < albums.Count - 1 ? $"/Album?Id=" + albums[this.Index + 1] : null;
+            this.Previous = this.Index > 0 ? $"/Album?Id=" + albums[this.Index - 1] : null;
+            this.Photos = new List<ViewModelPhoto>();
+            foreach (var photo in model.Photos)
+            {
+                this.Photos.Add(new ViewModelPhoto(photo, model.Photos.Select(x => x.Id).ToList()));
+            }
 
         }
 
         public Int32 Id { get; set; }
-        private List<Album> Albums {get; set; }
         private Int32 Index { get; set; }
         public String Name { get; set; }
         public String Thumbnail { get; set; }
@@ -38,21 +38,7 @@ namespace LeagueOfPlots.ViewModels
             }
         }
         public List<ViewModelPhoto> Photos { get; set; }
-        public IPaginator Next { 
-            get {
-                if (this.Index < this.Albums.Count - 1)
-                    return new ViewModelAlbum(this.Albums[this.Index + 1], this.Albums);
-                return null;
-            } 
-        }
-        public IPaginator Previous
-        {
-            get
-            {
-                if (this.Index > 0)
-                    return new ViewModelAlbum(this.Albums[this.Index - 1], this.Albums);
-                return null;
-            }
-        }
+        public String Next { get; set; }
+        public String Previous { get; set; }
     }
 }

@@ -27,30 +27,30 @@ namespace LeagueOfPlots.Controllers
         {
           
         }
-        public IActionResult Index(Int32 Id)
+        public async Task<IActionResult> Index(Int32 Id)
         {
-            List<Album> albums = this.ApplicationDbContext.Albums.ToList();
-            Album album = albums.FirstOrDefault(x => x.Id == Id);
+            List<Int32> albumsId = this.ApplicationDbContext.Albums.Select(x => x.Id).ToList();
+            Album album = await this.ApplicationDbContext.Albums.Include(x => x.Photos).ThenInclude(x => x.Content).FirstOrDefaultAsync(x => x.Id == Id);
             if (album == null)
             {
                 return NotFound();
             }
-            return View(new ViewModelAlbum(album,albums));
+            return View(new ViewModelAlbum(album, albumsId));
         }
 
-        public IActionResult Delete(Int32 Id)
+        public async Task<IActionResult> Delete(Int32 Id)
         {
-            Album album = this.ApplicationDbContext.Albums.FirstOrDefault(a => a.Id == Id);
+            Album album = this.ApplicationDbContext.Albums.Include(x => x.Photos).FirstOrDefault(a => a.Id == Id);
             if (album == null)
                 return NotFound();
             this.ApplicationDbContext.Remove(album);
-            this.ApplicationDbContext.SaveChanges();
+            await this.ApplicationDbContext.SaveChangesAsync();
             return new RedirectResult("~/Gallery");
         }
 
         public async Task<IActionResult> Upload(Int32 id, ICollection<IFormFile> files)
         {
-            Album album = this.ApplicationDbContext.Albums.FirstOrDefault(a => a.Id == id);
+            Album album = this.ApplicationDbContext.Albums.Include(x => x.CoverPhoto).FirstOrDefault(a => a.Id == id);
             foreach (var file in files.Where(f => ImageHelper.IsImageFile(f.FileName)))
             {
                 using (MemoryStream memoryStream = new MemoryStream())

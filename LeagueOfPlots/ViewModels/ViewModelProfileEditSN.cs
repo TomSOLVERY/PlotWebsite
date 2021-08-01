@@ -27,9 +27,9 @@ namespace LeagueOfPlots.ViewModels
 
         public void UpdateModel(ApplicationUser model)
         {
-            model.Facebook = this.Facebook?.Split(SocialNetworksConstants.Facebook)[1] ?? String.Empty;
-            model.Twitter = this.Twitter?.Split(SocialNetworksConstants.Twitter)[1] ?? String.Empty;
-            model.Instagram = this.Instagram?.Split(SocialNetworksConstants.Instagram)[1] ?? String.Empty;
+            model.Facebook = this.Facebook?.Split(SocialNetworksConstants.Facebook)[1];
+            model.Twitter = this.Twitter?.Split(SocialNetworksConstants.Twitter)[1];
+            model.Instagram = this.Instagram?.Split(SocialNetworksConstants.Instagram)[1];
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using LeagueOfPlots.Core;
 using LeagueOfPlots.Helpers;
 using LeagueOfPlots.Models;
@@ -25,9 +26,9 @@ namespace LeagueOfPlots.Controllers
         }
         public IActionResult Index(Int32 AlbumId,Int32 Id)
         {
-            List<Photo> photos = this.ApplicationDbContext.Photos.Where(x => x.AlbumId == AlbumId).ToList();
-            Photo photo = photos.FirstOrDefault(x => x.Id == Id);
-            if (photo == null)
+            List<Int32> photos = this.ApplicationDbContext.Photos.Where(x => x.AlbumId == AlbumId).Select(x => x.Id).ToList();
+            Photo photo = this.ApplicationDbContext.Photos.Include(x => x.Album).Include(x => x.Content).FirstOrDefault(x => x.Id == Id);
+            if (photo == null || photo.AlbumId != AlbumId)
                 return NotFound();
             return View(new ViewModelPhoto(photo,photos));
         }
@@ -43,14 +44,17 @@ namespace LeagueOfPlots.Controllers
 
         }
 
-        public IActionResult Delete(Int32 Id)
+        public async Task<IActionResult> Delete(Int32 Id)
         {
             Photo photo = this.ApplicationDbContext.Photos.FirstOrDefault(p => p.Id == Id);
             if (photo == null)
                 return NotFound();
-            photo.Album.PhotoCount--;
+            Int32 albumId = photo.AlbumId;
             this.ApplicationDbContext.Remove(photo);
-            this.ApplicationDbContext.SaveChanges();
+            await this.ApplicationDbContext.SaveChangesAsync();
+            Album album = this.ApplicationDbContext.Albums.FirstOrDefault(x => x.Id == albumId);
+            album.PhotoCount--;
+            await this.ApplicationDbContext.SaveChangesAsync();
             return new RedirectResult($"~/Album?Id=" + photo.AlbumId);
         }
 

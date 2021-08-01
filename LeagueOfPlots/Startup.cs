@@ -36,8 +36,7 @@ namespace LeagueOfPlots
             });
             services.AddRazorPages();
             services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseLazyLoadingProxies()
-                    .UseNpgsql(
+                    options.UseNpgsql(
                         this.Configuration.GetConnectionString("MyWebApiConection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole<Int32>>(options => options.SignIn.RequireConfirmedAccount = false)
